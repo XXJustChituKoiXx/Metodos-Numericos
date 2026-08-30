@@ -33,11 +33,18 @@ def float_number_representation(data:FloatNumberModel):
             status_code = status.HTTP_400_BAD_REQUEST,
             detail = "El número no es un float."
         )
-
-    dot_position:int = data.number.find(".")
-    int_part:int = int(data.number[:dot_position])
-    dec_part:str = data.number[dot_position:]
-    
+     
+    signo:int = 0 if float(data.number) >= 0 else 1
+    abs_number:str = data.number.replace("-","")
+    if "." in abs_number:
+        dot_position:int = abs_number.find(".")
+        int_part:int = int(abs_number[:dot_position])
+        dec_part:float = float(abs_number[dot_position:])
+        #transformar a binario
+    else:
+        int_part:int = int(abs_number)
+        dec_part:float = 0.0
+        #transformar a binario
     return {
         "Parte entera": int_part,
         "Parte decimal": dec_part
