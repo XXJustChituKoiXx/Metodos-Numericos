@@ -59,7 +59,3 @@ def normalizar_bin(int_part:str,dec_part:str) -> dict:
         "mantisa_normalizada": mantisa_normalizada,
         "bits_mantisa": parte_despues_del_uno 
     }
-
-
-def unir_todo(bit_signo:int,carac:str,mantisa:str):
-    pass
