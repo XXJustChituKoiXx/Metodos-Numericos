@@ -16,7 +16,7 @@ app.add_middleware(
 class FloatNumberModel(BaseModel):
     number: str
     bits: int
-
+    
 @app.post("/float_number")
 def float_number_representation(data: FloatNumberModel):
     #validar los bits y asignar tamaños
@@ -82,6 +82,8 @@ def float_number_representation(data: FloatNumberModel):
         "bits_mantisa": mantisa_final,
         "float_in_bin": float_in_bin
     }
+
+
 
 @app.get("/")
 def read_root():
