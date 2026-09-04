@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from parcial1.float_to_bitn import *
+from api.parcial1.float_to_bin import *
 
-
+#crea la fakin app del server
 app = FastAPI()
-
+#configuracion del corse para que no pete con el frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
