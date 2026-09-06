@@ -1,5 +1,5 @@
 import math
-
+from fastapi import HTTPException, status
 # Diccionario de funciones y constantes permitidas: solo estas funciones y constantes que se pueden usar dentro de la expresion. Todo lo demas no entra.
 
 FUNCIONES_PERMITIDAS = {
@@ -112,3 +112,44 @@ def metodo_secante(f, x0: float, x1: float,
         "convergio": False,
         "tabla": tabla,
     }
+
+
+def sec_method(data):
+    # Validar que la expresion se pueda evaluar antes de arrancar
+    f = construir_funcion(data.funcion)
+    try:
+        f(data.x0)
+        f(data.x1)
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La funcion no es valida. Usa 'x' como variable, "
+                   "por ejemplo: x**3 - 5*x + 3"
+        )
+ 
+    if data.error_max <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El error maximo debe ser mayor a cero."
+        )
+ 
+    if data.max_iter < 1 or data.max_iter > 1000:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Las iteraciones deben estar entre 1 y 1000."
+        )
+ 
+    try:
+        resultado = metodo_secante(f, data.x0, data.x1, data.error_max, data.max_iter)
+    except (ValueError, ZeroDivisionError) as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(error)
+        )
+    except OverflowError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El metodo diverge con esos valores iniciales."
+        )
+ 
+    return resultado
