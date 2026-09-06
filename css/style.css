@@ -109,6 +109,40 @@ button.parc:active {
     box-shadow: 0 0 0 transparent;
 }
 
+
+/*menu del aside con botones por parcial*/
+.menu-metodos{
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+.menu-metodos button {
+    width: 100%;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.7rem 0.8rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--theme-transition);
+}
+
+.menu-metodos button:hover {
+    background-color: var(--btn-hover);
+    color: var(--btn-hover-text);
+    border-color: var(--btn-hover);
+    box-shadow: 0 2px 0 var(--border);
+}
+
+.menu-metodos button:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
 /* TOGGLE */
 .theme-switch {
     display: inline-block;
