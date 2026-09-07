@@ -8,7 +8,7 @@
     --border: #c71a94;          
     --btn-hover: #f57eb6;       
     --btn-hover-text: #0d0d11;
-  
+    --send-button: #4ade80;
     --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -71,6 +71,10 @@ article {
     background-color: var(--bg-surface); 
     padding: 1rem;
     transition: var(--theme-transition);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 }
 
 /*BOTONES DE LOS PARCIALES*/
@@ -109,7 +113,6 @@ button.parc:active {
     box-shadow: 0 0 0 transparent;
 }
 
-
 /*menu del aside con botones por parcial*/
 .menu-metodos{
     display: flex;
@@ -143,13 +146,115 @@ button.parc:active {
     transform: translateY(2px);
     box-shadow: none;
 }
+
+/*main section de los metodos*/
+section{
+     border: 1px solid var(--border);
+     border-radius: 4px;
+     min-height: 300px;
+}
+
+.inputs-div{
+    margin: 20px;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inputs-div > h2{
+    margin: 0 0 20px 0;
+}
+
+h2 {
+    margin-bottom: 1.2rem;
+
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.4rem;
+
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    margin-bottom: 1rem;
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+
+    border: 1px solid var(--border);
+    border-radius: 4px;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    outline: none;
+    transition: var(--theme-transition);
+}
+
+input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+input:hover {
+    border-color: var(--accent);
+}
+
+input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 5px var(--accent);
+}
+.send-button {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border: 2px solid var(--send-button);
+    border-radius: 4px;
+    padding: 0.5rem 1.2rem;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--theme-transition);
+    box-shadow: 0 3px 0 var(--send-button);
+    position: relative;
+}
+
+.send-button:hover {
+    background-color: var(--send-button);
+    color: var(--bg-primary);
+    border-color: var(--send-button);
+    box-shadow: 0 3px 0 var(--text-primary);
+}
+
+.send-button:active {
+    top: 3px;
+    box-shadow: 0 0 0 transparent;
+}
+
+.error-message {
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
 /* TOGGLE */
 .theme-switch {
     display: inline-block;
     height: 28px;
     position: relative;
     width: 54px;
-    margin-left: auto; /* Empuja el switch al extremo derecho del nav */
+    margin-left: auto;
 }
 .theme-switch input {
     display: none;

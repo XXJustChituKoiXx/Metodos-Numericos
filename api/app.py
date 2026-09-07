@@ -19,7 +19,7 @@ class FloatNumberModel(BaseModel):
     number: str
     bits: int
     
-@app.post("/float_number/")
+@app.post("/float_number")
 def float_number_representation(data: FloatNumberModel):
     return float_to_bin(data)
 

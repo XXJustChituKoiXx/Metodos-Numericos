@@ -10,6 +10,7 @@ import {
     createTh,
     createMenuButton
 } from "./factories.js";
+import {float_to_bin_init} from "./metodos/float-to-bin/float-to-bin-init.js"
 
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
@@ -39,7 +40,8 @@ parc1Button.addEventListener("click", () => {
     const menuMethods = [
         {"text" : "Flotante en Binario"},
         {"text" : "Metodo Biseccion"},
-        {"text" : "Metodo Secane"}
+        {"text" : "Metodo Secante"},
+        {"text" : "Puto xd"}
     ];
 
     //crea los elementos de este parcial
@@ -47,7 +49,8 @@ parc1Button.addEventListener("click", () => {
     const buttons = menuButtons.querySelectorAll(".methods-parc1-btn");
 
     buttons[0].addEventListener("click", () => {
-        console.log("Flotante a binario");
+        article.innerHTML = "";
+        float_to_bin_init();
     });
 
     buttons[1].addEventListener("click", () => {

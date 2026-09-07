@@ -14,13 +14,12 @@ function createLabel(id, clas, forr, text) {
     return label;
 }
 
-function createInput(id, clas, type, placeholder, value) {
+function createInput(id, clas, type, placeholder) {
     let input = document.createElement("input");
     input.id = id;
     input.className = clas;
     input.type = type;
     input.placeholder = placeholder;
-    input.value = value;
     return input;
 }
 
@@ -37,7 +36,13 @@ function createDiv(id, clas) {
     div.className = clas;
     return div;
 }
-
+function createSpan(id, clas, text) {
+    let span = document.createElement("span");
+    span.id = id;
+    span.className = clas;
+    span.textContent = text;
+    return span;
+}
 function createTable(id, clas, minRows, minCols) {
     let table = document.createElement("table");
     table.id = id;
@@ -92,5 +97,6 @@ export {
     createTr,
     createTd,
     createTh,
-    createMenuButton
+    createMenuButton,
+    createSpan
 };
