@@ -7,13 +7,13 @@ python -m uvicorn app:app --reload
 
 
 Metodos
--Flotante a Bin    RICARDO  ⚠️
--Biseccion         ISIS     ⚠️
--Secante           FERNANDO ⚠️
+-Flotante a Bin    RICARDO  ⚠️  Falta terminar Interfaz
+-Biseccion         ISIS     ⚠️  Falta Interfaz y pruebas
+-Secante           FERNANDO ⚠️  Falta Interfaz
 -Falsa posicion    RICARDO  ❗
--Newton-Raphson    ISIS     ❗
+-Newton-Raphson    Ricardo  ❗
 -Punto Fijo        FERNANDO ❗
--Steffen           RICARDO  ❗
+-Steffensen        ISIS     ❗
 
 
 postman
