@@ -13,7 +13,7 @@ Metodos
 -Falsa posicion    RICARDO  ❗
 -Newton-Raphson    Ricardo  ❗
 -Punto Fijo        FERNANDO ❗
--Steffensen        ISIS     ❗
+-Steffensen        ISIS     ⚠️
 
 
 postman
@@ -23,3 +23,16 @@ clases re-usables de css
 .inputs-div
 .send-button
 .error-message
+
+metodos:
+    parametros: 
+        (variable de funcion,intervalo 1, intervalo 2, error maximo, maximo de iteraciones)
+    salida: 
+        {
+            "raiz"
+            "tabla"
+            "aproximaciones"
+        }
+
+generales:
+    -hacer generador de tabla
