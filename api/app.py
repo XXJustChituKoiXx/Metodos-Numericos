@@ -1,10 +1,12 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from auxiliares import *
+from parcial1.float_to_bin import float_to_bin
+from parcial1.secante import sec_method
 
+#crea la fakin app del server
 app = FastAPI()
-
+#configuracion del corse para que no pete con el frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,79 +14,35 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+#float number
 class FloatNumberModel(BaseModel):
     number: str
     bits: int
     
 @app.post("/float_number")
 def float_number_representation(data: FloatNumberModel):
-    #validar los bits y asignar tamaños
-    if data.bits == 16:
-        despla_expo = 15
-        tam_exponente = 5
-        tam_mantisa = 10
-    elif data.bits == 32:
-        despla_expo = 127
-        tam_exponente = 8
-        tam_mantisa = 23
-    elif data.bits == 64:
-        despla_expo = 1023
-        tam_exponente = 11
-        tam_mantisa = 52
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La representación debe ser de 16, 32 o 64 bits."
-        )
-    #validar que se resiva un float
-    try:
-        float(data.number)
-    except ValueError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="El número no es un float válido."
-        )
-    #obtener signo
-    signo: int = 0 if float(data.number) >= 0 else 1
-    abs_number: str = data.number.replace("-", "")
-    #comprobar si es entero o float, separar y transformar en binario la parte entera y decimal por separado
-    if "." in abs_number:
-        dot_position: int = abs_number.find(".")
-        int_part: int = int(abs_number[:dot_position])
-        dec_part: float = float(abs_number[dot_position:])
-        
-        int_part_bin = int_to_bin(int_part)
-        dec_part_bin = dec_to_bin(dec_part, len(int_part_bin))
-    else:
-        int_part: int = int(abs_number)
-        dec_part: float = 0.0
-        
-        int_part_bin = int_to_bin(int_part)
-        dec_part_bin = "0"
+    return float_to_bin(data)
 
-    #unir las partes en un solo string para obtener el exponente y normalizar despues
-    normalizado = normalizar_bin(int_part_bin, dec_part_bin)
 
-    #desplazar el exponente segun el tamaño para convertirlo en un exponente sin signo y convertirlo en binario
-    exponente_con_sesgo = int(normalizado['exponente']) + despla_expo
-    exponente_bin = int_to_bin(exponente_con_sesgo).zfill(tam_exponente) #ZFILL RELLENA CON 0 AL INICIO DEL STRING SEGUN LO QUE FALTE(en enteros el cero a la derecha no cambia el valor)
+#secante method
+class SecanteModel(BaseModel):
+    funcion: str
+    x0: float
+    x1: float
+    error_max: float = 1e-8
+    max_iter: int = 100
+ 
+ 
+@app.post("/secante")
+def calcular_secante(data: SecanteModel):
+    return sec_method(data)
 
-    #recuperar mantiza normalisada, si le faltan bits se agregan a la derecha(en decimal el 0 a la derecha no afecta nada jaja)
-    mantisa_cruda = normalizado['bits_mantisa']
-    mantisa_final = mantisa_cruda.ljust(tam_mantisa, "0")[:tam_mantisa] #LJUST AGREGA 0 AL FINAL SEGUN LO QUE FALTE
-    
-    float_in_bin = f"{signo}{exponente_bin}{mantisa_final}"
 
+
+
+
+@app.post("/")
+def inicio():
     return {
-        "bit_signo": signo,
-        "bits_exponente": exponente_bin,
-        "bits_mantisa": mantisa_final,
-        "float_in_bin": float_in_bin
+        "a": "a"
     }
-
-
-
-@app.get("/")
-def read_root():
-    return {"message": "holi uwu"}
