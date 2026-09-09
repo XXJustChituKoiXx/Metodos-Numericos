@@ -12,8 +12,9 @@ def biseccion( MAX_iter, a,b, funcion, MAX_err):
     c= (a+b)/2.0
     Error= 0
     i=0
+    aprox =[]
 
-    resultado={"raiz":None,"tabla":tabla}
+    resultado={"raiz":None,"tabla":tabla, "aproximaciones":aprox}
 
     try:
         f = eval("lambda x: " + funcion)
@@ -31,10 +32,12 @@ def biseccion( MAX_iter, a,b, funcion, MAX_err):
     if f(a)==0:
         agregar(i, a,b,c, Error)
         resultado["raiz"] = a
+        aprox.append(a)
         return resultado
     if f(b)==0:
         agregar(i, a,b,c, Error)
         resultado["raiz"] = b
+        aprox.append(b)
         return resultado
 
     while (i<MAX_iter):
@@ -48,6 +51,7 @@ def biseccion( MAX_iter, a,b, funcion, MAX_err):
         if f(c) == 0 or (i > 0 and Error<=MAX_err):
             agregar(i, a,b,c, Error)
             resultado["raiz"] = c
+            aprox.append(c)
             return resultado
         
         if f(a)*f(c) < 0:
@@ -55,6 +59,7 @@ def biseccion( MAX_iter, a,b, funcion, MAX_err):
         if f(c)*f(b) <0:
             a=c
         agregar(i, a,b,c, Error)
+        aprox.append(c)
         i+=1
     resultado["raiz"] = c
     return resultado
@@ -67,3 +72,5 @@ if "error" in resultado:
 else:
     print(resultado["raiz"])
     print(resultado["tabla"])
+    print("Aprox")
+    print(resultado["aproximaciones"])
