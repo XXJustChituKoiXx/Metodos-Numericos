@@ -27,8 +27,8 @@ def float_number_representation(data: FloatNumberModel):
 #secante method
 class SecanteModel(BaseModel):
     funcion: str
-    x0: float
-    x1: float
+    a: float
+    b: float
     error_max: float = 1e-8
     max_iter: int = 100
  
