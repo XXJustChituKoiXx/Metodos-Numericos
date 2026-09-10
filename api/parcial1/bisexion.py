@@ -3,11 +3,12 @@
 
 ##tabla: i| a | b | c | f(a) - signo|f(c)|f(b)|Error abs
 # x**3 -2, podria hacer un try catch para el formato
+from auxiliares import construir_funcion
 
 def sign_of(y):
     return '+' if y>=0 else '-'
 
-def biseccion( MAX_iter, a,b, funcion, MAX_err):
+def biseccion( f, a,b, MAX_err, MAX_iter):
     tabla= []
     c= (a+b)/2.0
     Error= 0
@@ -15,12 +16,6 @@ def biseccion( MAX_iter, a,b, funcion, MAX_err):
     aprox =[]
 
     resultado={"raiz":None,"tabla":tabla, "aproximaciones":aprox}
-
-    try:
-        f = eval("lambda x: " + funcion)
-    except Exception as ValueERR:
-        print(ValueERR)
-        return {"error": "La función no es válida, solo se permite variable x"}
 
     tabla.append(['i', 'a','b','c', 'f(a)','f(c)','f(b)', 'Error'])
 
@@ -65,7 +60,7 @@ def biseccion( MAX_iter, a,b, funcion, MAX_err):
     return resultado
 
 
-resultado = biseccion(10, 3, 5, "x**2 - x - 9", 1e-6)
+resultado = biseccion(10, 3, 5, construir_funcion("x**2 - x - 9"), 1e-6)
 
 if "error" in resultado:
     print(resultado["error"])

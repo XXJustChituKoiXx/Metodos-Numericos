@@ -1,4 +1,5 @@
-from bisexion import biseccion 
+from auxiliares import construir_funcion
+from bisexion import biseccion
 #primero se saca con otro metodo 2 aproximaciones p0 y p1
 #despues usando la formula p0 - (p1-p0)**2/(p2 -2p1 + p0)
 N_ITERAR=3
@@ -45,7 +46,10 @@ def Steffensen(f,aprox,MAX_iter,MAX_err):
 
 def ctr_Steff(MAX_iter, a,b, funcion, MAX_err, metodo):
     #crear la funcion, pasar como parametro, luego pasar los parametros a el metodo
-    primeros = metodos["Biseccion"](N_ITERAR,a,b,funcion,MAX_err)
+    f = construir_funcion(funcion)
+    if not metodos[metodo]:
+        return []
+    primeros = metodos[metodo]( f, a,b, MAX_err, N_ITERAR)
     
     if not primeros["raiz"]:
         resultado = Steffensen(funcion,primeros["aproximaciones"],MAX_iter,MAX_err)

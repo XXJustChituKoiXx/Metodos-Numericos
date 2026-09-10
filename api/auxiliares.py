@@ -1,3 +1,36 @@
+import math
+
+FUNCIONES_PERMITIDAS = {
+    "sin": math.sin,
+    "cos": math.cos,
+    "tan": math.tan,
+    "asin": math.asin,
+    "acos": math.acos,
+    "atan": math.atan,
+    "exp": math.exp,
+    "log": math.log,
+    "log10": math.log10,
+    "sqrt": math.sqrt,
+    "abs": abs,
+    "pi": math.pi,
+    "e": math.e,
+}
+
+def construir_funcion(expresion: str):
+    """Convierte el string del usuario en una funcion de Python.
+
+    Se evalua con un entorno restringido: sin builtins y solo con las
+    funciones matematicas del diccionario de funciones permitidas. Esto evita que alguien
+    mande codigo arbitrario en la expresion.
+    """
+    def f(x: float) -> float:
+        entorno = dict(FUNCIONES_PERMITIDAS) #Copia del diccionario de funciones permitidas
+        entorno["x"] = x
+        resultado = eval(expresion, entorno)
+        return float(resultado)
+
+    return f
+
 def int_to_bin(num: int) -> str:
     if num == 0:
         return "0"

@@ -1,43 +1,11 @@
 import math
+from auxiliares import construir_funcion
 from fastapi import HTTPException, status
 # Diccionario de funciones y constantes permitidas: solo estas funciones y constantes que se pueden usar dentro de la expresion. Todo lo demas no entra.
 
-FUNCIONES_PERMITIDAS = {
-    "sin": math.sin,
-    "cos": math.cos,
-    "tan": math.tan,
-    "asin": math.asin,
-    "acos": math.acos,
-    "atan": math.atan,
-    "exp": math.exp,
-    "log": math.log,
-    "log10": math.log10,
-    "sqrt": math.sqrt,
-    "abs": abs,
-    "pi": math.pi,
-    "e": math.e,
-}
-
-
-def construir_funcion(expresion: str):
-    """Convierte el string del usuario en una funcion de Python.
-
-    Se evalua con un entorno restringido: sin builtins y solo con las
-    funciones matematicas del diccionario de funciones permitidas. Esto evita que alguien
-    mande codigo arbitrario en la expresion.
-    """
-    def f(x: float) -> float:
-        entorno = dict(FUNCIONES_PERMITIDAS) #Copia del diccionario de funciones permitidas
-        entorno["x"] = x
-        resultado = eval(expresion, entorno)
-        return float(resultado)
-
-    return f
-
-
 def metodo_secante(f, x0: float, x1: float,
-                   error_max: float = 1e-8,
-                   max_iter: int = 100) -> dict:
+                   error_max: float,
+                   max_iter: int) -> dict:
     """Aproxima una raiz de f usando el metodo de la secante.
 
     Parametros:
