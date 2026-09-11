@@ -11,6 +11,7 @@ import {
     createMenuButton
 } from "./factories.js";
 import {float_to_bin_init} from "./metodos/float-to-bin/float-to-bin-init.js"
+import { secante_init } from "./metodos/secante-init.js"
 
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
@@ -58,7 +59,8 @@ parc1Button.addEventListener("click", () => {
     });
 
     buttons[2].addEventListener("click", () => {
-        console.log("Secante");
+        article.innerHTML = "";
+        secante_init();
     });
 
     
