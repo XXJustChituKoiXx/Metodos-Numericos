@@ -10,13 +10,16 @@ import {
     createTh,
     createMenuButton,
     createSpan
-} from "../../factories.js";
-import {conectApi} from "../../conection.js"
+} from "../factories.js";
+import {conectApi} from "../conection.js"
+
+
+const article = document.querySelector("article");
 
 export function float_to_bin_init(){
     const article = document.querySelector("article");
     const sectionInput = createSection("main-section","main-section-float-to-bin");
-    const inputDiv = createDiv("input-section-float-to-bin","inputs-div");
+    const inputDiv = createDiv("input-section-float-to-bin","container-div");
     const titleH2 = document.createElement("h2");
 
     const label1 = createLabel(
@@ -85,13 +88,26 @@ export function float_to_bin_init(){
         errorPrecision.style.display = "none";
 
         const float_number = inputNumber.value !== "" ? inputNumber.value : "0";
-
+        if(inputNumber.value === "") inputNumber.value = 0;
         const body = JSON.stringify({
             "number": float_number,
             "bits": precision
         });
 
-        conectApi(body, "float_number");
+        const res = conectApi(body, "float_number");
+        //eliminar el ultimo section de los rsultados antes de crear uno nuevo
+        if(article.children.length > 1) article.lastElementChild.remove();
+        reesultados(res);
     });
+}
+
+function reesultados(res){
+    const sectionResultados = createSection("resultados-section", "section-resultados");
+    const divResultados = createDiv("container-res","container-div");
+
+
+
+    sectionResultados.appendChild(divResultados);
+    article.appendChild(sectionResultados)
 }
 
