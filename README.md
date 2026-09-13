@@ -14,10 +14,9 @@ Metodos
 -Newton-Raphson    RICARDO  ❗
 -Punto Fijo        FERNANDO ❗
 -Steffensen        ISIS     ⚠️
--Steffensen        ISIS     ⚠️
 
 Programas pa testear
-Postman
+- Postman
 
 Clases re-usables de CSS
 .menu-metodos
