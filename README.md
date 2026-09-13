@@ -14,6 +14,7 @@ Metodos
 -Newton-Raphson    RICARDO  ❗
 -Punto Fijo        FERNANDO ❗
 -Steffensen        ISIS     ⚠️
+-Steffensen        ISIS     ⚠️
 
 Programas pa testear
 Postman
@@ -23,17 +24,3 @@ Clases re-usables de CSS
 .inputs-div
 .send-button
 .error-message
-
-metodos:
-    parametros: 
-        (variable de funcion,intervalo 1, intervalo 2, error maximo, maximo de iteraciones)
-    salida: 
-        {
-            "raiz"
-            "tabla"
-            "aproximaciones"
-        }
-
-generales:
-    -hacer generador de tabla
-.container-div
