@@ -154,7 +154,7 @@ section{
      min-height: 300px;
 }
 
-.inputs-div{
+.container-div{
     margin: 20px;
     display:flex;
     flex-direction: column;
