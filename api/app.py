@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from parcial1.float_to_bin import float_to_bin
 from parcial1.secante import sec_method
+from parcial1.punto_fijo import pf_method
 
 #crea la fakin app del server
 app = FastAPI()
@@ -38,7 +39,17 @@ def calcular_secante(data: SecanteModel):
     return sec_method(data)
 
 
+#punto fijo method
+class PuntoFijoModel(BaseModel):
+    funcion: str
+    a: float
+    error_max: float = 1e-8
+    max_iter: int = 100
 
+
+@app.post("/punto_fijo")
+def calcular_punto_fijo(data: PuntoFijoModel):
+    return pf_method(data)
 
 
 @app.post("/")
