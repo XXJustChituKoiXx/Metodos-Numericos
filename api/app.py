@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from parcial1.float_to_bin import float_to_bin
 from parcial1.secante import sec_method
+from parcial1.newthon_raphson import newton_raphson
 
 #crea la fakin app del server
 app = FastAPI()
@@ -37,12 +38,16 @@ class SecanteModel(BaseModel):
 def calcular_secante(data: SecanteModel):
     return sec_method(data)
 
+#secante method
+class NewthonRaphsonModel(BaseModel):
+    funcion: str
+    x0: float
+    #x1: float este metodo solo ocupa una aproximacion
+    error_max: float = 1e-8
+    max_iter: int = 100
+ 
+ 
+@app.post("/newthon-raphson")
+def calcular_newton_raphson(data: NewthonRaphsonModel):
+    return newton_raphson(data)
 
-
-
-
-@app.post("/")
-def inicio():
-    return {
-        "a": "a"
-    }
