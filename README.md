@@ -1,6 +1,7 @@
 -Libreerias de Python
 pip install fastapi
 python -m uvicorn app:app --reload
+pip install sympy
 
 Metodos
 ✅-terminado
