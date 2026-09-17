@@ -1,6 +1,7 @@
 import {createMenuButton} from "./factories.js";
 import {float_to_bin_init} from "./metodos/float-to-bin-init.js"
 import { secante_init } from "./metodos/secante-init.js"
+import { punto_fijo_init } from "./metodos/punto-fijo-init.js"
 
 
 const aside = document.querySelector("aside");
@@ -31,7 +32,8 @@ parc1Button.addEventListener("click", () => {
     const menuMethods = [
         {"text" : "Flotante en Binario"},
         {"text" : "Metodo Biseccion"},
-        {"text" : "Metodo Secante"}
+        {"text" : "Metodo Secante"},
+        {"text" : "Metodo Punto Fijo"}
     ];
 
     //crea los elementos de este parcial
@@ -50,6 +52,11 @@ parc1Button.addEventListener("click", () => {
     buttons[2].addEventListener("click", () => {
         article.innerHTML = "";
         secante_init();
+    });
+
+    buttons[3].addEventListener("click", () => {
+        article.innerHTML = "";
+        punto_fijo_init();
     });
 
     
