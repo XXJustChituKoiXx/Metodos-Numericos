@@ -1,19 +1,6 @@
-import {
-    createSection,
-    createLabel,
-    createInput,
-    createButton,
-    createDiv,
-    createTable,
-    createTr,
-    createTd,
-    createTh,
-    createMenuButton
-} from "./factories.js";
-import { secante_init } from "./metodos/secante-init.js"
 import {createMenuButton} from "./factories.js";
+import { secante_init } from "./metodos/secante-init.js"
 import {float_to_bin_init} from "./metodos/float-to-bin-init.js"
-
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
 

@@ -4,13 +4,10 @@ import {
     createInput,
     createButton,
     createDiv,
-    createTable,
-    createTr,
-    createTd,
-    createTh,
-    createMenuButton,
-    createSpan
+    createSpan,
+    createGenericTable  
 } from "../factories.js";
+import {mostrarError} from "../auxiliares.js";
 import {conectApi} from "../conection.js"
 
 
@@ -50,12 +47,11 @@ export function float_to_bin_init(){
         "Ej: 16,32 ó 64"
     );
 
-    const errorPrecision = createSpan(
-        "error-precision",
+    const errorMessage = createSpan(
+        "general-error",
         "error-message",
-        "La precisión debe ser 16, 32 o 64"
+        ""
     );
-
     const buttonSend = createButton("send-button","Calcular");
 
     titleH2.textContent = "Convertir Flotante a Binario";
@@ -70,44 +66,80 @@ export function float_to_bin_init(){
     inputDiv.appendChild(label1);
     inputDiv.appendChild(inputNumber);
     inputDiv.appendChild(label2);
-    inputDiv.appendChild(errorPrecision);
     inputDiv.appendChild(inputPrecicion);
+    inputDiv.appendChild(errorMessage);
     inputDiv.appendChild(buttonSend);
 
     sectionInput.appendChild(inputDiv);
     article.appendChild(sectionInput);
 
-    buttonSend.addEventListener("click", () => {
-        const precision = inputPrecicion.value;
+    buttonSend.addEventListener("click", async () => { 
+        const precision = inputPrecicion.value; 
+    
+        if (![16, 32, 64].includes(Number(precision))) { 
+            mostrarError(errorMessage,"Los valores de la presicion solo pueden ser 16,32 o 64.") 
+            return; 
+        } 
+    
+        errorMessage.style.display = "none"; 
+    
+        const float_number = inputNumber.value !== "" ? inputNumber.value : "0"; 
+        if(inputNumber.value === "") inputNumber.value = 0; 
 
-        if (![16, 32, 64].includes(Number(precision))) {
-            errorPrecision.style.display = "block";
-            return;
+        const body = JSON.stringify({ 
+            "number": float_number, 
+            "bits": precision 
+        }); 
+    
+        const res = await conectApi(body, "float_number");
+
+        if(article.children.length > 1) {
+            article.lastElementChild.remove(); 
         }
 
-        errorPrecision.style.display = "none";
-
-        const float_number = inputNumber.value !== "" ? inputNumber.value : "0";
-        if(inputNumber.value === "") inputNumber.value = 0;
-        const body = JSON.stringify({
-            "number": float_number,
-            "bits": precision
-        });
-
-        const res = conectApi(body, "float_number");
-        //eliminar el ultimo section de los rsultados antes de crear uno nuevo
-        if(article.children.length > 1) article.lastElementChild.remove();
-        reesultados(res);
+        reesultados(res); 
     });
 }
 
-function reesultados(res){
-    const sectionResultados = createSection("resultados-section", "section-resultados");
-    const divResultados = createDiv("container-res","container-div");
+function reesultados(res) { 
+    const sectionResultados = createSection(
+        "resultados-section", 
+        "section-resultados"
+    );
 
+    const divResultados = createDiv(
+        "container-res",
+        "container-div"
+    );
 
+    const titleH2 = document.createElement("h2");
+    titleH2.textContent = "Resultados";
+
+    const encabezados = [
+        "Signo",
+        "Exponente",
+        "Mantisa",
+        "Float en binario"
+    ];
+
+    const datos = [[
+        res.bit_signo,
+        res.bits_exponente,
+        res.bits_mantisa,
+        res.float_in_bin
+    ]];
+
+    const tabla = createGenericTable(
+        "tabla-float-to-bin",
+        "tabla-resultados",
+        encabezados,
+        datos
+    );
+
+    divResultados.appendChild(titleH2);
+    divResultados.appendChild(tabla);
 
     sectionResultados.appendChild(divResultados);
-    article.appendChild(sectionResultados)
+    article.appendChild(sectionResultados);
 }
 
