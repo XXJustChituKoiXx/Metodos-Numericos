@@ -38,16 +38,29 @@ class SecanteModel(BaseModel):
 def calcular_secante(data: SecanteModel):
     return sec_method(data)
 
-#secante method
+#Newton-Raphson method
 class NewthonRaphsonModel(BaseModel):
-    funcion: str
+    function: str
     x0: float
     #x1: float este metodo solo ocupa una aproximacion
     error_max: float = 1e-8
     max_iter: int = 100
  
  
-@app.post("/newthon-raphson")
+@app.post("/newthon_raphson")
 def calcular_newton_raphson(data: NewthonRaphsonModel):
+    return newton_raphson(data)
+
+#Falsa-Posicion method
+class FakePositionModel(BaseModel):
+    function: str
+    x0: float
+    x1: float
+    error_max: float = 1e-8
+    max_iter: int = 100
+ 
+ 
+@app.post("/fake_position")
+def calcular_fake_position(data: FakePositionModel):
     return newton_raphson(data)
 

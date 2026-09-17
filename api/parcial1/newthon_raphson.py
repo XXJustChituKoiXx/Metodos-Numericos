@@ -4,7 +4,7 @@ def newton_raphson(data):
     ## tabla: i | xn | f(x) | f'(x) | xnp1 | Error abs
     tabla = []
     aproximaciones = []
-
+    error_message = ""
     x = sp.Symbol('x')
     function = sp.sympify(data.function)
     derivada = sp.diff(function, x)
