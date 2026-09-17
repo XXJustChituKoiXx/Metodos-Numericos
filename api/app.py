@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from parcial1.float_to_bin import float_to_bin
 from parcial1.secante import sec_method
 from parcial1.punto_fijo import pf_method
+from parcial1.newthon_raphson import newton_raphson
+from parcial1.muller import muller_method
 
 #crea la fakin app del server
 app = FastAPI()
@@ -38,6 +40,18 @@ class SecanteModel(BaseModel):
 def calcular_secante(data: SecanteModel):
     return sec_method(data)
 
+#Newton-Raphson method
+class NewthonRaphsonModel(BaseModel):
+    function: str
+    x0: float
+    #x1: float este metodo solo ocupa una aproximacion
+    error_max: float = 1e-8
+    max_iter: int = 100
+ 
+ 
+@app.post("/newthon_raphson")
+def calcular_newton_raphson(data: NewthonRaphsonModel):
+    return newton_raphson(data)
 
 #punto fijo method
 class PuntoFijoModel(BaseModel):
@@ -50,6 +64,31 @@ class PuntoFijoModel(BaseModel):
 @app.post("/punto_fijo")
 def calcular_punto_fijo(data: PuntoFijoModel):
     return pf_method(data)
+
+#Falsa-Posicion method
+class FakePositionModel(BaseModel):
+    function: str
+    x0: float
+    x1: float
+    error_max: float = 1e-8
+    max_iter: int = 100
+ 
+@app.post("/fake_position")
+def calcular_fake_position(data: FakePositionModel):
+    return newton_raphson(data)
+
+#Muller method
+class MullerModel(BaseModel):
+    function: str
+    x0: float
+    x1: float
+    x2: float #este metodo necesita 3 aproximaciones
+    error_max: float = 1e-8
+    max_iter: int = 100
+ 
+@app.post("/fake_position")
+def calcular_Muller(data: MullerModel):
+    return muller_method(data)
 
 
 @app.post("/")

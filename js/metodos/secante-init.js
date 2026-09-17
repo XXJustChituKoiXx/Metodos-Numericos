@@ -4,12 +4,10 @@ import {
     createInput,
     createButton,
     createDiv,
-    createTable,
-    createTr,
-    createTd,
-    createTh,
-    createSpan
+    createSpan,
+    createGenericTable
 } from "../factories.js";
+import {mostrarError,formatearNumero} from "../auxiliares.js";
 import { conectApi } from "../conection.js";
 
 export function secante_init() {
@@ -197,7 +195,8 @@ export function secante_init() {
 // FUNCION 2: arma el section de los resultados
 // Recibe la respuesta del endpoint
 // ============================================================
-export function secante_result(data) {
+
+function secante_result(data) {
     const article = document.querySelector("article");
 
     // Si ya habia resultados de una corrida anterior, se borran
@@ -220,9 +219,11 @@ export function secante_result(data) {
             "error-message",
             data.mensaje ? data.mensaje : "El metodo no encontro una raiz."
         );
+
         resultDiv.appendChild(aviso);
         sectionResult.appendChild(resultDiv);
         article.appendChild(sectionResult);
+
         return;
     }
 
@@ -232,6 +233,7 @@ export function secante_result(data) {
         "resultado-texto",
         "Raiz aproximada: " + data.raiz
     );
+
     resultDiv.appendChild(raizSpan);
 
     if (data.mensaje) {
@@ -240,34 +242,28 @@ export function secante_result(data) {
             "resultado-texto",
             data.mensaje
         );
+
         resultDiv.appendChild(mensajeSpan);
     }
 
     // --- tabla de iteraciones ---
-    const encabezados = ["i", "x(i-1)", "x(i)", "x(i+1)", "Error absoluto"];
-    const tabla = createTable("tabla-secante", "tabla-iteraciones");
+    const encabezados = [
+        "i",
+        "x(i-1)",
+        "x(i)",
+        "x(i+1)",
+        "Error absoluto"
+    ];
 
-    const filaEncabezado = createTr("tr-encabezado-secante", "tr-encabezado");
-    encabezados.forEach((texto, indice) => {
-        const th = createTh("th-secante-" + indice, "th-tabla", texto);
-        filaEncabezado.appendChild(th);
-    });
-    tabla.appendChild(filaEncabezado);
-
-    data.tabla.forEach((fila, indiceFila) => {
-        const tr = createTr("tr-secante-" + indiceFila, "tr-tabla");
-        fila.forEach((valor, indiceCol) => {
-            // La primera columna es el numero de iteracion, va entero
-            const texto = indiceCol === 0 ? valor : formatearNumero(valor);
-            const td = createTd(
-                "td-secante-" + indiceFila + "-" + indiceCol,
-                "td-tabla",
-                texto
-            );
-            tr.appendChild(td);
-        });
-        tabla.appendChild(tr);
-    });
+    const tabla = createGenericTable(
+        "tabla-secante",
+        "tabla-iteraciones",
+        encabezados,
+        data.tabla,
+        (valor, indiceCol) => {
+            return indiceCol === 0 ? valor : formatearNumero(valor);
+        }
+    );
 
     resultDiv.appendChild(tabla);
 
@@ -275,22 +271,3 @@ export function secante_result(data) {
     article.appendChild(sectionResult);
 }
 
-
-// ============================================================
-// Auxiliares
-// ============================================================
-function mostrarError(elemento, texto) {
-    elemento.textContent = texto;
-    elemento.style.display = "block";
-}
-
-function formatearNumero(valor) {
-    if (typeof valor !== "number") {
-        return valor;
-    }
-    // Los errores muy chicos se leen mejor en notacion cientifica
-    if (valor !== 0 && Math.abs(valor) < 0.000001) {
-        return valor.toExponential(4);
-    }
-    return valor.toFixed(6);
-}

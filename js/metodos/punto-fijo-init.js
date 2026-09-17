@@ -4,12 +4,10 @@ import {
     createInput,
     createButton,
     createDiv,
-    createTable,
-    createTr,
-    createTd,
-    createTh,
-    createSpan
+    createSpan,
+    createGenericTable
 } from "../factories.js";
+import { mostrarError, formatearNumero } from "../auxiliares.js";
 import { conectApi } from "../conection.js";
 
 
@@ -205,47 +203,25 @@ export function punto_fijo_result(data) {
     }
 
 
-    const encabezados = ["i", "x(i)", "g(x(i))", "Error absoluto"];
-    const tabla = createTable("tabla-punto-fijo", "tabla-iteraciones");
+    const encabezados = [
+        "i",
+        "x(i)",
+        "g(x(i))",
+        "Error absoluto"
+    ];
 
-    const filaEncabezado = createTr("tr-encabezado-punto-fijo", "tr-encabezado");
-    encabezados.forEach((texto, indice) => {
-        const th = createTh("th-punto-fijo-" + indice, "th-tabla", texto);
-        filaEncabezado.appendChild(th);
-    });
-    tabla.appendChild(filaEncabezado);
-
-    data.tabla.forEach((fila, indiceFila) => {
-        const tr = createTr("tr-punto-fijo-" + indiceFila, "tr-tabla");
-        fila.forEach((valor, indiceCol) => {
-            const texto = indiceCol === 0 ? valor : formatearNumero(valor);
-            const td = createTd(
-                "td-punto-fijo-" + indiceFila + "-" + indiceCol,
-                "td-tabla",
-                texto
-            );
-            tr.appendChild(td);
-        });
-        tabla.appendChild(tr);
-    });
+    const tabla = createGenericTable(
+        "tabla-punto-fijo",
+        "tabla-iteraciones",
+        encabezados,
+        data.tabla,
+        (valor, indiceCol) => {
+            return indiceCol === 0 ? valor : formatearNumero(valor);
+        }
+    );
 
     resultDiv.appendChild(tabla);
 
     sectionResult.appendChild(resultDiv);
     article.appendChild(sectionResult);
-}
-
-function mostrarError(elemento, texto) {
-    elemento.textContent = texto;
-    elemento.style.display = "block";
-}
-
-function formatearNumero(valor) {
-    if (typeof valor !== "number") {
-        return valor;
-    }
-    if (valor !== 0 && Math.abs(valor) < 0.000001) {
-        return valor.toExponential(4);
-    }
-    return valor.toFixed(6);
 }
