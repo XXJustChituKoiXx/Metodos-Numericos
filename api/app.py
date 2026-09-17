@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from parcial1.float_to_bin import float_to_bin
 from parcial1.secante import sec_method
 from parcial1.newthon_raphson import newton_raphson
+from parcial1.muller import muller_method
 
 #crea la fakin app del server
 app = FastAPI()
@@ -59,8 +60,19 @@ class FakePositionModel(BaseModel):
     error_max: float = 1e-8
     max_iter: int = 100
  
- 
 @app.post("/fake_position")
 def calcular_fake_position(data: FakePositionModel):
     return newton_raphson(data)
 
+#Muller method
+class MullerModel(BaseModel):
+    function: str
+    x0: float
+    x1: float
+    x2: float #este metodo necesita 3 aproximaciones
+    error_max: float = 1e-8
+    max_iter: int = 100
+ 
+@app.post("/fake_position")
+def calcular_Muller(data: MullerModel):
+    return muller_method(data)

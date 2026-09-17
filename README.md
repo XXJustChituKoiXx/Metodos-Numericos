@@ -17,7 +17,7 @@ Metodos
 -Steffensen        ISIS     ⚠️  En produccion
 -Deflacion         ISIS     ❗
 -Horner            FERNANDO ❗
--Muller            RICARDO  ❗
+-Muller            RICARDO  ⚠️  Falta Interfaz
 
 Programas pa testear
 - Postman

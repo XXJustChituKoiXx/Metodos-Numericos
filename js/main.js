@@ -21,7 +21,7 @@ const parc3Button = document.getElementById('parc3');
 
 
 parc1Button.addEventListener("click", () => {
-    //vaciar el aside y el article para cambiar de parcial o metodo
+    //vacear el aside y el article para cambiar de parcial o metodo
     aside.innerHTML = "";
     article.innerHTML = "";
 
@@ -29,7 +29,14 @@ parc1Button.addEventListener("click", () => {
     const menuMethods = [
         {"text" : "Flotante en Binario"},
         {"text" : "Metodo Biseccion"},
-        {"text" : "Metodo Secante"}
+        {"text" : "Metodo Secante"},
+        {"text" : "Falsa Posicion"},
+        {"text" : "Newton-Raphson"},
+        {"text" : "Punto Fijo"},
+        {"text" : "Steffensen"},
+        {"text" : "Deflacion"},
+        {"text" : "Horner"},
+        {"text" : "Müler"}
     ];
 
     //crea los elementos de este parcial
@@ -49,7 +56,34 @@ parc1Button.addEventListener("click", () => {
         article.innerHTML = "";
         secante_init();
     });
-
+    buttons[3].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[3]);
+    });
+    buttons[4].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[4]);
+    });
+    buttons[5].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[5]);
+    });
+    buttons[6].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[6]);
+    });
+    buttons[7].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[7]);
+    });
+    buttons[8].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[8]);
+    });
+    buttons[9].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[9]);
+    });
     
 
     aside.appendChild(menuButtons);
