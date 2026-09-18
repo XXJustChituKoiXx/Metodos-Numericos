@@ -1,8 +1,8 @@
 import cmath
-from auxiliares import crear_funcion,convertir_complex
+from auxiliares import crear_funcion_compleja,convertir_complex
 def muller_method(data):
 
-    f = crear_funcion(data.function)
+    f = crear_funcion_compleja(data.function)
 
     x0 = data.x0
     x1 = data.x1
@@ -25,16 +25,10 @@ def muller_method(data):
             break
 
         # obtener a
-        a = (
-            ((f(x0) - f(x2)) * (x1 - x2))
-            - ((f(x1) - f(x2)) * (x0 - x2))
-        ) / delta
+        a = (((f(x0) - f(x2)) * (x1 - x2))- ((f(x1) - f(x2)) * (x0 - x2))) / delta
 
         # obtener b
-        b = (
-            ((x0 - x2) ** 2) * (f(x1) - f(x2))
-            - ((x1 - x2) ** 2) * (f(x0) - f(x2))
-        ) / delta
+        b = (((x0 - x2) ** 2) * (f(x1) - f(x2))- ((x1 - x2) ** 2) * (f(x0) - f(x2))) / delta
 
         # obtener c
         c = f(x2)
@@ -66,7 +60,7 @@ def muller_method(data):
 
         aproximaciones.append(convertir_complex(x))
 
-        if error_abs <= data.error.max:
+        if error_abs <= data.error_max:
             error_message = f"Se alcanzo la tolerancia de error en la iteracion {i}."
             break
 

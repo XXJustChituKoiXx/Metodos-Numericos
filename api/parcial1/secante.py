@@ -1,37 +1,4 @@
-import math
-
-# Lista blanca: unicas funciones y constantes que el usuario puede usar
-# dentro de la expresion. Todo lo demas queda bloqueado.
-FUNCIONES_PERMITIDAS = {
-    "sin": math.sin,
-    "cos": math.cos,
-    "tan": math.tan,
-    "asin": math.asin,
-    "acos": math.acos,
-    "atan": math.atan,
-    "sinh": math.sinh,
-    "cosh": math.cosh,
-    "tanh": math.tanh,
-    "exp": math.exp,
-    "log": math.log,
-    "log10": math.log10,
-    "sqrt": math.sqrt,
-    "abs": abs,
-    "pi": math.pi,
-    "e": math.e,
-}
-
-
-def construir_funcion(funcion: str):
-    """Convierte un string como en una funcion de Python."""
-    def f(x: float) -> float:
-        entorno = dict(FUNCIONES_PERMITIDAS)
-        entorno["x"] = x
-        return float(eval(funcion, {"__builtins__": {}}, entorno))
-
-    return f
-
-
+from auxiliares import construir_funcion
 def Secante(funcion: str, a: float, b: float,
             MAX_err: float, MAX_iter: int) -> dict:
     """Metodo de la secante.

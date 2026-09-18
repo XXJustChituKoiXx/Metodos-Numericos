@@ -74,6 +74,6 @@ class MullerModel(BaseModel):
     error_max: float = 1e-8
     max_iter: int = 100
  
-@app.post("/fake_position")
+@app.post("/muller")
 def calcular_Muller(data: MullerModel):
     return muller_method(data)
