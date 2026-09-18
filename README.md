@@ -13,9 +13,9 @@ Metodos
 -Secante           FERNANDO ✅
 -Falsa posicion    RICARDO  ✅
 -Newton-Raphson    RICARDO  ✅
--Punto Fijo        FERNANDO ⚠️  Falta Interfaz
+-Punto Fijo        FERNANDO ⚠️  Pushear
 -Steffensen        ISIS     ⚠️  En produccion
--Deflacion         ISIS     ❗
+-Deflacion         ISIS     ⚠️  En produccion
 -Horner            FERNANDO ❗
 -Muller            RICARDO  ✅
 
