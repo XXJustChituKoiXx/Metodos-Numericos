@@ -11,7 +11,7 @@ Metodos
 -Flotante a Bin    RICARDO  ✅
 -Biseccion         ISIS     ⚠️  Falta Interfaz
 -Secante           FERNANDO ✅
--Falsa posicion    RICARDO  ⚠️  Falta Interfaz
+-Falsa posicion    RICARDO  ✅
 -Newton-Raphson    RICARDO  ⚠️  Falta Interfaz
 -Punto Fijo        FERNANDO ⚠️  Falta Interfaz
 -Steffensen        ISIS     ⚠️  En produccion
