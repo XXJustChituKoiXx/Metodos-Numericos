@@ -1,8 +1,10 @@
 import {createMenuButton} from "./factories.js";
-import { secante_init } from "./metodos/secante-init.js"
-import {float_to_bin_init} from "./metodos/float-to-bin-init.js"
+import { secante_init } from "./metodos/secante-init.js";
+import {float_to_bin_init} from "./metodos/float-to-bin-init.js";
 import {falsa_posicion_init} from "./metodos/falsa-posicion.js";
-import {newton_raphson_init} from "./metodos/newthon-raphson.js"
+import {newton_raphson_init} from "./metodos/newthon-raphson.js";
+import { muller_init } from "./metodos/muller.js";
+
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
 
@@ -84,7 +86,7 @@ parc1Button.addEventListener("click", () => {
     });
     buttons[9].addEventListener("click", () => {
         article.innerHTML = "";
-        console.log(buttons[9]);
+        muller_init();
     });
     
 
