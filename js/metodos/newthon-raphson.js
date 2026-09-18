@@ -11,95 +11,81 @@ import {
 import { mostrarError, formatearNumero } from "../auxiliares.js";
 import { conectApi } from "../conection.js";
 
-export function falsa_posicion_init() {
+export function newton_raphson_init() {
     const article = document.querySelector("article");
 
     const sectionInput = createSection(
-        "main-section-falsa-posicion",
-        "main-section-falsa-posicion"
+        "main-section-newton-raphson",
+        "main-section-newton-raphson"
     );
 
     const inputDiv = createDiv(
-        "input-section-falsa-posicion",
+        "input-section-newton-raphson",
         "inputs-div"
     );
 
     const titleH2 = document.createElement("h2");
 
-    titleH2.textContent = "Metodo Falsa Posicion.";
+    titleH2.textContent = "Metodo Newton Raphson.";
 
     const labelFuncion = createLabel(
-        "label-falsa-posicion",
+        "label-newton-raphson",
         "label-input",
-        "input-funcion-falsa-posicion",
+        "input-funcion-newton-raphson",
         "Ingrese la funcion (use x como variable):"
     );
 
     const inputFuncion = createInput(
-        "input-funcion-falsa-posicion",
+        "input-funcion-newton-raphson",
         "input-text",
         "text",
         "Ej: x**2 - 3"
     );
 
-    const labelA = createLabel(
-        "label-a-falsa-posicion",
+    const labelX0 = createLabel(
+        "label-x0-newton-raphson",
         "label-input",
-        "input-a-falsa-posicion",
+        "input-x0-newton-raphson",
         "x0:"
     );
 
-    const inputA = createInput(
-        "input-a-falsa-posicion",
+    const inputX0 = createInput(
+        "input-x0-newton-raphson",
         "input-number",
         "number",
         "Ej: 1"
     );
 
-    const labelB = createLabel(
-        "label-b-falsa-posicion",
-        "label-input",
-        "input-b-falsa-posicion",
-        "x1:"
-    );
-
-    const inputB = createInput(
-        "input-b-falsa-posicion",
-        "input-number",
-        "number",
-        "Ej: 2"
-    );
-
     const labelError = createLabel(
-        "label-error-falsa-posicion",
+        "label-error-newton-raphson",
         "label-input",
-        "input-error-falsa-posicion",
+        "input-error-newton-raphson",
         "Error maximo:"
     );
 
     const inputError = createInput(
-        "input-error-falsa-posicion",
+        "input-error-newton-raphson",
         "input-number",
         "number",
         "Ej: 0.001"
     );
 
     const labelIter = createLabel(
-        "label-iter-falsa-posicion",
+        "label-iter-newton-raphson",
         "label-input",
-        "input-iter-falsa-posicion",
+        "input-iter-newton-raphson",
         "Maximo de iteraciones:"
     );
 
     const inputIter = createInput(
-        "input-iter-falsa-posicion",
+        "input-iter-newton-raphson",
         "input-number",
         "number",
         "Ej: 100"
     );
 
     const errorMensaje = createSpan(
-        "error-falsa-posicion",
+        "error-newton-raphson",
         "error-message",
         ""
     );
@@ -121,10 +107,8 @@ export function falsa_posicion_init() {
     inputDiv.appendChild(titleH2);
     inputDiv.appendChild(labelFuncion);
     inputDiv.appendChild(inputFuncion);
-    inputDiv.appendChild(labelA);
-    inputDiv.appendChild(inputA);
-    inputDiv.appendChild(labelB);
-    inputDiv.appendChild(inputB);
+    inputDiv.appendChild(labelX0);
+    inputDiv.appendChild(inputX0);
     inputDiv.appendChild(labelError);
     inputDiv.appendChild(inputError);
     inputDiv.appendChild(labelIter);
@@ -137,8 +121,7 @@ export function falsa_posicion_init() {
 
     buttonSend.addEventListener("click", async () => {
         const funcion = inputFuncion.value.trim();
-        const a = inputA.value;
-        const b = inputB.value;
+        const x0 = inputX0.value;
         const errorMax = inputError.value;
         const maxIter = inputIter.value;
 
@@ -150,18 +133,10 @@ export function falsa_posicion_init() {
             return;
         }
 
-        if (a === "" || b === "") {
+        if (x0 === "") {
             mostrarError(
                 errorMensaje,
-                "Escriba las dos aproximaciones iniciales."
-            );
-            return;
-        }
-
-        if (Number(a) === Number(b)) {
-            mostrarError(
-                errorMensaje,
-                "Las dos aproximaciones deben ser distintas."
+                "Escriba la aproximacion inicial."
             );
             return;
         }
@@ -186,17 +161,16 @@ export function falsa_posicion_init() {
 
         const body = JSON.stringify({
             "function": funcion,
-            "x0": Number(a),
-            "x1": Number(b),
+            "x0": Number(x0),
             "error_max": Number(errorMax),
             "max_iter": Number(maxIter)
         });
 
         const respuesta = await conectApi(
             body,
-            "fake_position"
+            "newton_raphson"
         );
-        
+
         if (!respuesta) {
             mostrarError(
                 errorMensaje,
@@ -205,16 +179,16 @@ export function falsa_posicion_init() {
             return;
         }
 
-        falsa_posicion_result(respuesta);
+        newton_raphson_result(respuesta);
     });
 }
 
-function falsa_posicion_result(data) {
+function newton_raphson_result(data) {
     const article = document.querySelector("article");
 
     // Si ya habia resultados de una corrida anterior, se borran
     const anterior = document.getElementById(
-        "result-section-falsa-posicion"
+        "result-section-newton-raphson"
     );
 
     if (anterior) {
@@ -222,12 +196,12 @@ function falsa_posicion_result(data) {
     }
 
     const sectionResult = createSection(
-        "result-section-falsa-posicion",
-        "main-section-falsa-posicion"
+        "result-section-newton-raphson",
+        "main-section-newton-raphson"
     );
 
     const resultDiv = createDiv(
-        "result-div-falsa-posicion",
+        "result-div-newton-raphson",
         "inputs-div"
     );
 
@@ -239,7 +213,7 @@ function falsa_posicion_result(data) {
 
     if (data.raiz === null || data.raiz === undefined) {
         const aviso = createSpan(
-            "aviso-falsa-posicion",
+            "aviso-newton-raphson",
             "error-message",
             data.mensaje
                 ? data.mensaje
@@ -254,7 +228,7 @@ function falsa_posicion_result(data) {
     }
 
     const raizSpan = createSpan(
-        "raiz-falsa-posicion",
+        "raiz-newton-raphson",
         "resultado-texto",
         "Raiz aproximada: " + formatearNumero(data.raiz)
     );
@@ -263,7 +237,7 @@ function falsa_posicion_result(data) {
 
     if (data.mensaje) {
         const mensajeSpan = createSpan(
-            "mensaje-falsa-posicion",
+            "mensaje-newton-raphson",
             "resultado-texto",
             data.mensaje
         );
@@ -274,15 +248,14 @@ function falsa_posicion_result(data) {
     const encabezados = [
         "i",
         "x0",
-        "x1",
+        "f(x)",
+        "f'(x)",
         "xn",
-        "signo f(x0)*f(xn)",
-        "signo f(x1)*f(xn)",
         "Error absoluto"
     ];
 
     const tabla = createGenericTable(
-        "tabla-falsa-posicion",
+        "tabla-newton-raphson",
         "tabla-iteraciones",
         encabezados,
         data.tabla,

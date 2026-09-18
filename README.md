@@ -12,12 +12,12 @@ Metodos
 -Biseccion         ISIS     ⚠️  Falta Interfaz
 -Secante           FERNANDO ✅
 -Falsa posicion    RICARDO  ✅
--Newton-Raphson    RICARDO  ⚠️  Falta Interfaz
+-Newton-Raphson    RICARDO  ✅
 -Punto Fijo        FERNANDO ⚠️  Falta Interfaz
 -Steffensen        ISIS     ⚠️  En produccion
 -Deflacion         ISIS     ❗
 -Horner            FERNANDO ❗
--Muller            RICARDO  ⚠️  Falta Interfaz
+-Muller            RICARDO  ✅
 
 Programas pa testear
 - Postman

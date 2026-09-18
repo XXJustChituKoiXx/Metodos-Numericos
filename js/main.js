@@ -1,7 +1,8 @@
 import {createMenuButton} from "./factories.js";
 import { secante_init } from "./metodos/secante-init.js"
 import {float_to_bin_init} from "./metodos/float-to-bin-init.js"
-import {falsa_posicion_init, ffalsa_posicion_init} from "./metodos/falsa-posicion.js";
+import {falsa_posicion_init} from "./metodos/falsa-posicion.js";
+import {newton_raphson_init} from "./metodos/newthon-raphson.js"
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
 
@@ -63,7 +64,7 @@ parc1Button.addEventListener("click", () => {
     });
     buttons[4].addEventListener("click", () => {
         article.innerHTML = "";
-        console.log(buttons[4]);
+        newton_raphson_init();
     });
     buttons[5].addEventListener("click", () => {
         article.innerHTML = "";

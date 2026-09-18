@@ -26,7 +26,7 @@ def newton_raphson(data):
         tabla.append([i, xn, f_xn, df_xn, xnp1, error])
         xn = xnp1    
         
-        if(error <= data.error.max and i < data.max_iter):
+        if(error <= data.error_max and i < data.max_iter):
             error_message = f"Se alcanzo el error maximo antes de la iteracion {data.max_iter}"
             break
 

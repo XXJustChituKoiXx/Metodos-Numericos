@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from parcial1.float_to_bin import float_to_bin
 from parcial1.secante import sec_method
+from parcial1.falsa_posicion import fake_position_metod
 from parcial1.newthon_raphson import newton_raphson
 from parcial1.muller import muller_method
 
@@ -48,7 +49,7 @@ class NewthonRaphsonModel(BaseModel):
     max_iter: int = 100
  
  
-@app.post("/newthon_raphson")
+@app.post("/newton_raphson")
 def calcular_newton_raphson(data: NewthonRaphsonModel):
     return newton_raphson(data)
 
@@ -62,7 +63,7 @@ class FakePositionModel(BaseModel):
  
 @app.post("/fake_position")
 def calcular_fake_position(data: FakePositionModel):
-    return newton_raphson(data)
+    return fake_position_metod(data)
 
 #Muller method
 class MullerModel(BaseModel):
