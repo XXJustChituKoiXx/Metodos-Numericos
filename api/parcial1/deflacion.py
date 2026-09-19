@@ -13,10 +13,12 @@ import cmath
 ruta_api = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(ruta_api)
 
-from auxiliares import construir_funcion
 from auxiliares import Polinomio
+from auxiliares import crear_funcion_compleja,convertir_complex
+from .muller import muller_method
+from modelos import MullerModel
 
-def Deflacion(polinom, ErrorMAX, IterMAX):
+def Deflacion(polinom, data):
     
     p = Polinomio(polinom.grado, list(polinom.coeficientes))
 
@@ -25,16 +27,32 @@ def Deflacion(polinom, ErrorMAX, IterMAX):
 
     p0, p1, p2 = 0.5 + 0.5j, -0.5 + 0.5j, 0.5 - 0.5j
 
+    funcion= data.function
+
     while p.grado > 2:
-        resultado = p.muller(p0, p1, p2, ErrorMAX, IterMAX)
-        r = resultado["raiz"]
+        para_muller = MullerModel(
+            function=funcion,
+            x0=p0,
+            x1=p1,
+            x2=p2,
+            error_max=data.error_max,
+            max_iter=data.max_iter
+        )
+    
+        resultado = muller_method(para_muller)
+        raiz=resultado["raiz"]
+        r = complex(
+            raiz["real"],
+            raiz["imag"]
+        )
 
         p.agregar_raiz(r)
-        tabla.append({"raiz": indice, "valor": r})
+        tabla.append({"raiz": indice, "valor": convertir_complex(r)})
         indice += 1
 
-        p=p.div_sint(r)
-
+        p=p._div_sint(r)
+        p._gen_texto_funcion()
+        funcion= p.funcion
         p0, p1, p2 = r + 0.1, r - 0.1j, r + 0.1j
 
     if p.grado == 2:
@@ -45,22 +63,24 @@ def Deflacion(polinom, ErrorMAX, IterMAX):
 
         p.agregar_raiz(r1)
         p.agregar_raiz(r2)
-        tabla.append({"raiz": indice, "valor": r1})
+        tabla.append({"raiz": indice, "valor": convertir_complex(r1)})
         indice += 1
-        tabla.append({"raiz": indice, "valor": r2})
+        tabla.append({"raiz": indice, "valor": convertir_complex(r2)})
 
     for r in p.raices:
         polinom.agregar_raiz(r)
 
     return tabla
 
-def ctr_def(coeficientes,grado,MAX_iter, MAX_err):
-    
-    pol= Polinomio(grado,coeficientes)
-
-    tabla=Deflacion(pol,MAX_err,MAX_iter)
+def ctr_deflacion(data):
+    f = crear_funcion_compleja(data.function)
+    pol= Polinomio(data.grado,list(data.coeficientes), f)
+    tabla=Deflacion(pol,data)
         
-    return tabla
+    return {
+        "tabla": tabla,
+        "funcion": data.function
+    }
 
     
     

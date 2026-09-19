@@ -6,6 +6,9 @@ from parcial1.secante import sec_method
 from parcial1.falsa_posicion import fake_position_metod
 from parcial1.newthon_raphson import newton_raphson
 from parcial1.muller import muller_method
+from parcial1.deflacion import ctr_deflacion
+from parcial1.bisexion import biseccion
+from parcial1.steffensen import ctr_Steff
 
 #crea la fakin app del server
 app = FastAPI()
@@ -26,6 +29,17 @@ class FloatNumberModel(BaseModel):
 def float_number_representation(data: FloatNumberModel):
     return float_to_bin(data)
 
+#biseccion metodo
+class BisexionModel(BaseModel):
+    function: str
+    a: float
+    b: float
+    error_max: float = 1e-8
+    max_iter: int = 100
+
+@app.post("/biseccion")
+def calcular_Bisexion(data: BisexionModel):
+    return biseccion(data)
 
 #secante method
 class SecanteModel(BaseModel):
@@ -65,6 +79,16 @@ class FakePositionModel(BaseModel):
 def calcular_fake_position(data: FakePositionModel):
     return fake_position_metod(data)
 
+#steffensen metodo
+class SteffencenModel(BaseModel):
+    function: str
+    error_max: float = 1e-8
+    max_iter: int = 100
+
+@app.post("/steffensen")
+def calcular_Steffensen(data: SteffencenModel):
+    return ctr_Steff(data)
+
 #Muller method
 class MullerModel(BaseModel):
     function: str
@@ -73,7 +97,19 @@ class MullerModel(BaseModel):
     x2: float #este metodo necesita 3 aproximaciones
     error_max: float = 1e-8
     max_iter: int = 100
- 
+
 @app.post("/muller")
 def calcular_Muller(data: MullerModel):
     return muller_method(data)
+
+#deflacion metodo
+class DeflacionModel(BaseModel):
+    function: str
+    coeficientes: list[complex]   # grande -> pequeño
+    grado: int
+    error_max: float = 1e-8
+    max_iter: int = 100
+
+@app.post("/deflacion")
+def calcular_Deflacion(data: DeflacionModel):
+    return ctr_deflacion(data)

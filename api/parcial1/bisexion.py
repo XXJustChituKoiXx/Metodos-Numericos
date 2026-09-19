@@ -14,7 +14,13 @@ from auxiliares import construir_funcion
 def sign_of(y):
     return '+' if y>=0 else '-'
 
-def biseccion( f, a,b, MAX_err, MAX_iter):
+def biseccion(data):
+    f = construir_funcion(data.function)
+    a= data.a
+    b= data.b
+    MAX_err = data.error_max
+    MAX_iter = data.max_iter
+
     tabla= []
     c= (a+b)/2.0
     Error= 0
@@ -22,8 +28,6 @@ def biseccion( f, a,b, MAX_err, MAX_iter):
     aprox =[]
 
     resultado={"raiz":None,"tabla":tabla, "aproximaciones":aprox}
-
-    tabla.append(['i', 'a','b','c', 'f(a)','f(c)','f(b)', 'Error'])
 
     def agregar(i, a,b,c, Error):
         tabla.append([i+1,a,b,c,sign_of(f(a)), sign_of(f(c)),sign_of(f(b)),Error])

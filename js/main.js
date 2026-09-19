@@ -4,6 +4,9 @@ import {float_to_bin_init} from "./metodos/float-to-bin-init.js";
 import {falsa_posicion_init} from "./metodos/falsa-posicion.js";
 import {newton_raphson_init} from "./metodos/newthon-raphson.js";
 import { muller_init } from "./metodos/muller.js";
+import {deflacion_init} from "./metodos/deflacion.js";
+import {biseccion_init} from "./metodos/biseccion.js";
+import {steffensen_init} from "./metodos/steffensen.js";
 
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
@@ -53,7 +56,8 @@ parc1Button.addEventListener("click", () => {
     });
 
     buttons[1].addEventListener("click", () => {
-        console.log("Biseccion");
+        article.innerHTML = "";
+        biseccion_init();
     });
 
     buttons[2].addEventListener("click", () => {
@@ -74,11 +78,11 @@ parc1Button.addEventListener("click", () => {
     });
     buttons[6].addEventListener("click", () => {
         article.innerHTML = "";
-        console.log(buttons[6]);
+        steffensen_init();
     });
     buttons[7].addEventListener("click", () => {
         article.innerHTML = "";
-        console.log(buttons[7]);
+        deflacion_init();
     });
     buttons[8].addEventListener("click", () => {
         article.innerHTML = "";

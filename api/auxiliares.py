@@ -34,10 +34,52 @@ def construir_funcion(expresion: str):
     return f
 
 class Polinomio:
-    def __init__(self, grado, coeficientes, raices=None):
+    def __init__(self, grado, coeficientes, funcion=None,raices=None):
         self.grado = grado
         self.coeficientes = [complex(c) for c in coeficientes]  # grande -> pequeño
         self.raices=  list(raices) if raices else []
+        self.funcion=funcion
+
+    def _gen_texto_funcion(self):
+        terminos = []
+        n = self.grado
+
+        for i, c in enumerate(self.coeficientes):
+            c = complex(c).real       
+            if abs(c) < 1e-15:# saltar coeficientes cero
+                continue
+
+            grado = n - i 
+
+            if grado == 0:
+                terminos.append(f"{c:g}")
+            else:
+                if abs(c - 1) < 1e-15:
+                    coef_str = ""  # 1*x -> "x"
+                elif abs(c + 1) < 1e-15:
+                    coef_str = "-"
+                else:
+                    coef_str = f"{c:g}*"
+
+                if grado == 1:
+                    x_str = "x"
+                else:
+                    x_str = f"x**{grado}"
+
+                terminos.append(f"{coef_str}{x_str}")
+
+        if not terminos:
+            return "0"
+
+        texto = terminos[0]
+        for t in terminos[1:]:
+            if t.startswith("-"):
+                texto += f" - {t[1:]}"
+            else:
+                texto += f" + {t}"
+                
+        self.funcion=texto
+        return texto
 
     def _div_sint(self, raiz):
         raiz = complex(raiz)
@@ -54,11 +96,7 @@ class Polinomio:
         return Polinomio(n - 1, b)
 
     def evaluar(self, x):
-        x = complex(x)
-        y = 0j
-        for c in self.coeficientes:
-            y = y * x + c
-        return y
+        return self.funcion(x)
 
     def agregar_raiz(self, raiz, tol=1e-8):
 
@@ -99,11 +137,6 @@ class Polinomio:
                 coef[i + j] += ai * bj
         return Polinomio(lambda x: self.evaluar(x) * otro.evaluar(x),
                          len(coef) - 1, coef)
-
-    def escalar(self, k):
-        k = complex(k)
-        coef = [k * c for c in self.coeficientes]
-        return Polinomio(lambda x: k * self.evaluar(x), self.grado, coef)
 
     @staticmethod
     def _eval_coef(coef, x):

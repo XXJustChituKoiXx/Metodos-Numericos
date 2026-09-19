@@ -5,7 +5,8 @@ ruta_api = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(ruta_api)
 
 from auxiliares import construir_funcion
-from bisexion import biseccion
+from .bisexion import biseccion
+from modelos import BisexionModel
 #primero se saca con otro metodo 2 aproximaciones p0 y p1
 #despues usando la formula p0 - (p1-p0)**2/(p2 -2p1 + p0)
 N_ITERAR = 3
@@ -28,7 +29,6 @@ def Steffensen(f, aprox, MAX_iter, MAX_err):
 
     Error = abs(p2 - p1)
 
-    tabla.append(['i', 'Pn', 'P n+1', 'P n+2', 'Error'])
     tabla.append([i+1, p0, p1, p2, Error])
 
     while i <= MAX_iter:
@@ -49,13 +49,26 @@ def Steffensen(f, aprox, MAX_iter, MAX_err):
     resultado["raiz"] = p2
     return resultado
 
-def ctr_Steff(MAX_iter, a, b, funcion, MAX_err, metodo):
-    f = construir_funcion(funcion)
+def ctr_Steff(data):
+    metodo="Biseccion"
+    f = construir_funcion(data.function)
+    a= 3
+    b= 5
+    MAX_err = data.error_max
+    MAX_iter = data.max_iter
     
     if metodo not in metodos:
         return {"raiz": None, "tabla": []}
+
+    b_json = BisexionModel(
+        function=data.function,
+        a=a,
+        b=b,
+        error_max=data.error_max,
+        max_iter=N_ITERAR
+    )
         
-    primeros = metodos[metodo](f, a, b, MAX_err, N_ITERAR)
+    primeros = metodos[metodo](b_json)
     
     if primeros.get("raiz") is None and "aproximaciones" not in primeros:
         resultado = primeros
@@ -64,9 +77,3 @@ def ctr_Steff(MAX_iter, a, b, funcion, MAX_err, metodo):
         
         
     return resultado
-
-resultado = ctr_Steff(15, 3, 5, "x**2 - x - 9", 1e-6, 'Biseccion')
-print("Raiz:", resultado["raiz"])
-print("Tabla:")
-for fila in resultado["tabla"]:
-    print(fila)

@@ -1,6 +1,7 @@
 -Libreerias de Python
 pip install fastapi
 python -m uvicorn app:app --reload
+python -m uvicorn api.app:app --reload
 pip install sympy
 
 Metodos
@@ -9,13 +10,13 @@ Metodos
 ❗-no empezado
 
 -Flotante a Bin    RICARDO  ✅
--Biseccion         ISIS     ⚠️  Falta Interfaz
+-Biseccion         ISIS     ✅ 
 -Secante           FERNANDO ✅
 -Falsa posicion    RICARDO  ✅
 -Newton-Raphson    RICARDO  ✅
 -Punto Fijo        FERNANDO ⚠️  Pushear
 -Steffensen        ISIS     ⚠️  En produccion
--Deflacion         ISIS     ⚠️  En produccion
+-Deflacion         ISIS     ✅  
 -Horner            FERNANDO ❗
 -Muller            RICARDO  ✅
 
