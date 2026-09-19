@@ -11,13 +11,13 @@ Metodos
 -Flotante a Bin    RICARDO  ✅
 -Biseccion         ISIS     ⚠️  Falta Interfaz
 -Secante           FERNANDO ✅
--Falsa posicion    RICARDO  ⚠️  Falta Interfaz
--Newton-Raphson    RICARDO  ⚠️  Falta Interfaz
--Punto Fijo        FERNANDO ⚠️  Falta Interfaz
+-Falsa posicion    RICARDO  ✅
+-Newton-Raphson    RICARDO  ✅
+-Punto Fijo        FERNANDO ⚠️  Pushear
 -Steffensen        ISIS     ⚠️  En produccion
--Deflacion         ISIS     ❗
+-Deflacion         ISIS     ⚠️  En produccion
 -Horner            FERNANDO ❗
--Muller            RICARDO  ⚠️  Falta Interfaz
+-Muller            RICARDO  ✅
 
 Programas pa testear
 - Postman

@@ -1,3 +1,37 @@
+import cmath
+import math
+
+# Lista blanca: unicas funciones y constantes que el usuario puede usar
+# dentro de la expresion. Todo lo demas queda bloqueado.
+FUNCIONES_PERMITIDAS = {
+    "sin": math.sin,
+    "cos": math.cos,
+    "tan": math.tan,
+    "asin": math.asin,
+    "acos": math.acos,
+    "atan": math.atan,
+    "sinh": math.sinh,
+    "cosh": math.cosh,
+    "tanh": math.tanh,
+    "exp": math.exp,
+    "log": math.log,
+    "log10": math.log10,
+    "sqrt": math.sqrt,
+    "abs": abs,
+    "pi": math.pi,
+    "e": math.e,
+}
+
+
+def construir_funcion(funcion: str):
+    """Convierte un string como en una funcion de Python."""
+    def f(x: float) -> float:
+        entorno = dict(FUNCIONES_PERMITIDAS)
+        entorno["x"] = x
+        return float(eval(funcion, {"__builtins__": {}}, entorno))
+
+    return f
+
 def int_to_bin(num: int) -> str:
     if num == 0:
         return "0"
@@ -59,3 +93,31 @@ def normalizar_bin(int_part:str,dec_part:str) -> dict:
         "mantisa_normalizada": mantisa_normalizada,
         "bits_mantisa": parte_despues_del_uno 
     }
+
+def crear_funcion_compleja(funcion):
+    def f(x):
+        return eval(
+            funcion,
+            {
+                "x": x,
+                "sqrt": cmath.sqrt,
+                "sin": cmath.sin,
+                "cos": cmath.cos,
+                "tan": cmath.tan,
+                "exp": cmath.exp,
+                "log": cmath.log,
+                "pi": cmath.pi,
+                "e": cmath.e
+            }
+        )
+    return f
+
+
+def convertir_complex(valor):
+    if isinstance(valor, complex):
+        return {
+            "real": valor.real,
+            "imag": valor.imag
+        }
+
+    return valor

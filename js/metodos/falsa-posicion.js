@@ -7,117 +7,117 @@ import {
     createSpan,
     createGenericTable
 } from "../factories.js";
-import {mostrarError,formatearNumero} from "../auxiliares.js";
+
+import { mostrarError, formatearNumero } from "../auxiliares.js";
 import { conectApi } from "../conection.js";
 
-export function secante_init() {
+export function falsa_posicion_init() {
     const article = document.querySelector("article");
 
-    const sectionInput = createSection("main-section-secante", "main-section-secante");
-    const inputDiv = createDiv("input-section-secante", "inputs-div");
+    const sectionInput = createSection(
+        "main-section-falsa-posicion",
+        "main-section-falsa-posicion"
+    );
+
+    const inputDiv = createDiv(
+        "input-section-falsa-posicion",
+        "inputs-div"
+    );
+
     const titleH2 = document.createElement("h2");
 
-    titleH2.textContent = "Metodo de la Secante";
+    titleH2.textContent = "Metodo Falsa Posicion.";
 
-    // --- funcion ---
     const labelFuncion = createLabel(
-        "label-funcion-secante",
+        "label-falsa-posicion",
         "label-input",
-        "input-funcion-secante",
+        "input-funcion-falsa-posicion",
         "Ingrese la funcion (use x como variable):"
     );
 
     const inputFuncion = createInput(
-        "input-funcion-secante",
+        "input-funcion-falsa-posicion",
         "input-text",
         "text",
         "Ej: x**2 - 3"
     );
 
-    // --- primer valor inicial ---
     const labelA = createLabel(
-        "label-a-secante",
+        "label-a-falsa-posicion",
         "label-input",
-        "input-a-secante",
-        "Primera aproximacion inicial:"
+        "input-a-falsa-posicion",
+        "x0:"
     );
 
     const inputA = createInput(
-        "input-a-secante",
+        "input-a-falsa-posicion",
         "input-number",
         "number",
         "Ej: 1"
     );
 
-    // --- segundo valor inicial ---
     const labelB = createLabel(
-        "label-b-secante",
+        "label-b-falsa-posicion",
         "label-input",
-        "input-b-secante",
-        "Segunda aproximacion inicial:"
+        "input-b-falsa-posicion",
+        "x1:"
     );
 
     const inputB = createInput(
-        "input-b-secante",
+        "input-b-falsa-posicion",
         "input-number",
         "number",
         "Ej: 2"
     );
 
-    // --- error maximo ---
     const labelError = createLabel(
-        "label-error-secante",
+        "label-error-falsa-posicion",
         "label-input",
-        "input-error-secante",
-        "Error maximo (tolerancia):"
+        "input-error-falsa-posicion",
+        "Error maximo:"
     );
 
     const inputError = createInput(
-        "input-error-secante",
+        "input-error-falsa-posicion",
         "input-number",
         "number",
         "Ej: 0.001"
     );
 
-    // --- maximo de iteraciones ---
     const labelIter = createLabel(
-        "label-iter-secante",
+        "label-iter-falsa-posicion",
         "label-input",
-        "input-iter-secante",
+        "input-iter-falsa-posicion",
         "Maximo de iteraciones:"
     );
 
     const inputIter = createInput(
-        "input-iter-secante",
+        "input-iter-falsa-posicion",
         "input-number",
         "number",
         "Ej: 100"
     );
 
-    // --- mensajes de error del formulario ---
     const errorMensaje = createSpan(
-        "error-secante",
+        "error-falsa-posicion",
         "error-message",
         ""
     );
 
-    const buttonSend = createButton("send-button", "Calcular");
+    const buttonSend = createButton(
+        "send-button",
+        "Calcular"
+    );
 
     // Restricciones de los inputs numericos
     inputError.min = 0;
-    inputError.step = "any";
-    inputA.step = "any";
-    inputB.step = "any";
     inputIter.min = 1;
     inputIter.step = 1;
-
-    // Valores por defecto, mismos que la plantilla de Python
     inputError.value = "0.001";
     inputIter.value = "100";
 
     errorMensaje.style.display = "none";
 
-    // Armado del div
     inputDiv.appendChild(titleH2);
     inputDiv.appendChild(labelFuncion);
     inputDiv.appendChild(inputFuncion);
@@ -135,7 +135,6 @@ export function secante_init() {
     sectionInput.appendChild(inputDiv);
     article.appendChild(sectionInput);
 
-    // --- evento del boton ---
     buttonSend.addEventListener("click", async () => {
         const funcion = inputFuncion.value.trim();
         const a = inputA.value;
@@ -143,81 +142,108 @@ export function secante_init() {
         const errorMax = inputError.value;
         const maxIter = inputIter.value;
 
-        // Validaciones antes de molestar al servidor
         if (funcion === "") {
-            mostrarError(errorMensaje, "Escriba una funcion.");
+            mostrarError(
+                errorMensaje,
+                "Escriba una funcion."
+            );
             return;
         }
 
         if (a === "" || b === "") {
-            mostrarError(errorMensaje, "Escriba las dos aproximaciones iniciales.");
+            mostrarError(
+                errorMensaje,
+                "Escriba las dos aproximaciones iniciales."
+            );
             return;
         }
 
         if (Number(a) === Number(b)) {
-            mostrarError(errorMensaje, "Las dos aproximaciones deben ser distintas.");
+            mostrarError(
+                errorMensaje,
+                "Las dos aproximaciones deben ser distintas."
+            );
             return;
         }
 
         if (errorMax === "" || Number(errorMax) <= 0) {
-            mostrarError(errorMensaje, "El error maximo debe ser mayor a cero.");
+            mostrarError(
+                errorMensaje,
+                "El error maximo debe ser mayor a cero."
+            );
             return;
         }
 
         if (maxIter === "" || Number(maxIter) < 1) {
-            mostrarError(errorMensaje, "Las iteraciones deben ser al menos 1.");
+            mostrarError(
+                errorMensaje,
+                "Las iteraciones deben ser al menos 1."
+            );
             return;
         }
 
         errorMensaje.style.display = "none";
 
         const body = JSON.stringify({
-            "funcion": funcion,
-            "a": Number(a),
-            "b": Number(b),
+            "function": funcion,
+            "x0": Number(a),
+            "x1": Number(b),
             "error_max": Number(errorMax),
             "max_iter": Number(maxIter)
         });
 
-        const respuesta = await conectApi(body, "secante");
-
+        const respuesta = await conectApi(
+            body,
+            "fake_position"
+        );
+        
         if (!respuesta) {
-            mostrarError(errorMensaje, "No se pudo conectar con el servidor.");
+            mostrarError(
+                errorMensaje,
+                "No se pudo conectar con el servidor."
+            );
             return;
         }
 
-        secante_result(respuesta);
+        falsa_posicion_result(respuesta);
     });
 }
 
-
-// ============================================================
-// FUNCION 2: arma el section de los resultados
-// Recibe la respuesta del endpoint
-// ============================================================
-
-function secante_result(data) {
+function falsa_posicion_result(data) {
     const article = document.querySelector("article");
 
     // Si ya habia resultados de una corrida anterior, se borran
-    const anterior = document.getElementById("result-section-secante");
+    const anterior = document.getElementById(
+        "result-section-falsa-posicion"
+    );
+
     if (anterior) {
         anterior.remove();
     }
 
-    const sectionResult = createSection("result-section-secante", "main-section-secante");
-    const resultDiv = createDiv("result-div-secante", "inputs-div");
+    const sectionResult = createSection(
+        "result-section-falsa-posicion",
+        "main-section-falsa-posicion"
+    );
+
+    const resultDiv = createDiv(
+        "result-div-falsa-posicion",
+        "inputs-div"
+    );
+
     const titleH2 = document.createElement("h2");
 
     titleH2.textContent = "Resultados";
+
     resultDiv.appendChild(titleH2);
 
-    // --- caso sin raiz: se muestra el mensaje y no hay tabla ---
     if (data.raiz === null || data.raiz === undefined) {
         const aviso = createSpan(
-            "aviso-secante",
+            "aviso-falsa-posicion",
             "error-message",
-            data.mensaje ? data.mensaje : "El metodo no encontro una raiz."
+            data.mensaje
+                ? data.mensaje
+                : "El metodo no encontro una raiz."
         );
 
         resultDiv.appendChild(aviso);
@@ -227,18 +253,17 @@ function secante_result(data) {
         return;
     }
 
-    // --- raiz encontrada ---
     const raizSpan = createSpan(
-        "raiz-secante",
+        "raiz-falsa-posicion",
         "resultado-texto",
-        "Raiz aproximada: " + data.raiz
+        "Raiz aproximada: " + formatearNumero(data.raiz)
     );
 
     resultDiv.appendChild(raizSpan);
 
     if (data.mensaje) {
         const mensajeSpan = createSpan(
-            "mensaje-secante",
+            "mensaje-falsa-posicion",
             "resultado-texto",
             data.mensaje
         );
@@ -246,17 +271,18 @@ function secante_result(data) {
         resultDiv.appendChild(mensajeSpan);
     }
 
-    // --- tabla de iteraciones ---
     const encabezados = [
         "i",
-        "x(i-1)",
-        "x(i)",
-        "x(i+1)",
+        "x0",
+        "x1",
+        "xn",
+        "signo f(x0)*f(xn)",
+        "signo f(x1)*f(xn)",
         "Error absoluto"
     ];
 
     const tabla = createGenericTable(
-        "tabla-secante",
+        "tabla-falsa-posicion",
         "tabla-iteraciones",
         encabezados,
         data.tabla,
