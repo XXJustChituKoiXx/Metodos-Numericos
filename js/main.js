@@ -1,16 +1,9 @@
-import {
-    createSection,
-    createLabel,
-    createInput,
-    createButton,
-    createDiv,
-    createTable,
-    createTr,
-    createTd,
-    createTh,
-    createMenuButton
-} from "./factories.js";
-import {float_to_bin_init} from "./metodos/float-to-bin/float-to-bin-init.js"
+import {createMenuButton} from "./factories.js";
+import { secante_init } from "./metodos/secante-init.js";
+import {float_to_bin_init} from "./metodos/float-to-bin-init.js";
+import {falsa_posicion_init} from "./metodos/falsa-posicion.js";
+import {newton_raphson_init} from "./metodos/newthon-raphson.js";
+import { muller_init } from "./metodos/muller.js";
 
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
@@ -32,7 +25,7 @@ const parc3Button = document.getElementById('parc3');
 
 
 parc1Button.addEventListener("click", () => {
-    //vaciar el aside y el article para cambiar de parcial o metodo
+    //vacear el aside y el article para cambiar de parcial o metodo
     aside.innerHTML = "";
     article.innerHTML = "";
 
@@ -41,7 +34,13 @@ parc1Button.addEventListener("click", () => {
         {"text" : "Flotante en Binario"},
         {"text" : "Metodo Biseccion"},
         {"text" : "Metodo Secante"},
-        {"text" : "Puto xd"}
+        {"text" : "Falsa Posicion"},
+        {"text" : "Newton-Raphson"},
+        {"text" : "Punto Fijo"},
+        {"text" : "Steffensen"},
+        {"text" : "Deflacion"},
+        {"text" : "Horner"},
+        {"text" : "Müler"}
     ];
 
     //crea los elementos de este parcial
@@ -58,9 +57,37 @@ parc1Button.addEventListener("click", () => {
     });
 
     buttons[2].addEventListener("click", () => {
-        console.log("Secante");
+        article.innerHTML = "";
+        secante_init();
     });
-
+    buttons[3].addEventListener("click", () => {
+        article.innerHTML = "";
+        falsa_posicion_init();
+    });
+    buttons[4].addEventListener("click", () => {
+        article.innerHTML = "";
+        newton_raphson_init();
+    });
+    buttons[5].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[5]);
+    });
+    buttons[6].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[6]);
+    });
+    buttons[7].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[7]);
+    });
+    buttons[8].addEventListener("click", () => {
+        article.innerHTML = "";
+        console.log(buttons[8]);
+    });
+    buttons[9].addEventListener("click", () => {
+        article.innerHTML = "";
+        muller_init();
+    });
     
 
     aside.appendChild(menuButtons);
