@@ -3,6 +3,12 @@
 
 ##tabla: i| a | b | c | f(a) - signo|f(c)|f(b)|Error abs
 # x**3 -2, podria hacer un try catch para el formato
+import sys
+import os
+
+ruta_api = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(ruta_api)
+
 from auxiliares import construir_funcion
 
 def sign_of(y):
@@ -60,7 +66,8 @@ def biseccion( f, a,b, MAX_err, MAX_iter):
     return resultado
 
 
-resultado = biseccion(10, 3, 5, construir_funcion("x**2 - x - 9"), 1e-6)
+"""
+resultado = biseccion(construir_funcion("x**2 - x - 9"), 3, 5, 1e-6, 3)
 
 if "error" in resultado:
     print(resultado["error"])
@@ -69,3 +76,4 @@ else:
     print(resultado["tabla"])
     print("Aprox")
     print(resultado["aproximaciones"])
+"""
