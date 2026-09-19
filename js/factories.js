@@ -75,7 +75,7 @@ function createTh(id, clas, text) {
 
 //elementos html compuestos jaja
 function createMenuButton(wraper , id, clas, classButton ,buttons=[]){
-    const container = wraper = "nav" ? document.createElement('nav'):createDiv(id,clas);
+    const container = wraper == "nav" ? document.createElement('nav'):createDiv(id,clas);
     container.className = clas;
     container.id = id;
     buttons.forEach((e) =>{
@@ -86,7 +86,49 @@ function createMenuButton(wraper , id, clas, classButton ,buttons=[]){
     return container;
 }
 
+function createGenericTable(id, clas, encabezados = [], datos = [], formatear = (valor) => valor) {
 
+    const table = createTable(id, clas);
+
+    const filaEncabezado = createTr("tr-encabezado", "tr-encabezado");
+
+    encabezados.forEach((texto, indice) => {
+        const th = createTh(
+            "th-" + indice,
+            "th-tabla",
+            texto
+        );
+
+        filaEncabezado.appendChild(th);
+    });
+
+    table.appendChild(filaEncabezado);
+
+    datos.forEach((fila, indiceFila) => {
+
+        const tr = createTr(
+            "tr-" + indiceFila,
+            "tr-tabla"
+        );
+
+        fila.forEach((valor, indiceCol) => {
+
+            const texto = formatear(valor, indiceCol, indiceFila);
+
+            const td = createTd(
+                "td-" + indiceFila + "-" + indiceCol,
+                "td-tabla",
+                texto
+            );
+
+            tr.appendChild(td);
+        });
+
+        table.appendChild(tr);
+    });
+
+    return table;
+}
 export {
     createSection,
     createLabel,
@@ -98,5 +140,6 @@ export {
     createTd,
     createTh,
     createMenuButton,
+    createGenericTable,
     createSpan
-};
+};  

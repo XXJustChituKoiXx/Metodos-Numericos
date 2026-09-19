@@ -1,4 +1,5 @@
 import math
+import cmath
 
 FUNCIONES_PERMITIDAS = {
     "sin": math.sin,
@@ -92,3 +93,31 @@ def normalizar_bin(int_part:str,dec_part:str) -> dict:
         "mantisa_normalizada": mantisa_normalizada,
         "bits_mantisa": parte_despues_del_uno 
     }
+
+def crear_funcion_compleja(funcion):
+    def f(x):
+        return eval(
+            funcion,
+            {
+                "x": x,
+                "sqrt": cmath.sqrt,
+                "sin": cmath.sin,
+                "cos": cmath.cos,
+                "tan": cmath.tan,
+                "exp": cmath.exp,
+                "log": cmath.log,
+                "pi": cmath.pi,
+                "e": cmath.e
+            }
+        )
+    return f
+
+
+def convertir_complex(valor):
+    if isinstance(valor, complex):
+        return {
+            "real": valor.real,
+            "imag": valor.imag
+        }
+
+    return valor
