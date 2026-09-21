@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from parcial1.float_to_bin import float_to_bin
 from parcial1.secante import sec_method
+from parcial1.punto_fijo import pf_method
 from parcial1.falsa_posicion import fake_position_metod
 from parcial1.newthon_raphson import newton_raphson
 from parcial1.muller import muller_method
@@ -66,6 +67,18 @@ class NewthonRaphsonModel(BaseModel):
 @app.post("/newton_raphson")
 def calcular_newton_raphson(data: NewthonRaphsonModel):
     return newton_raphson(data)
+
+#punto fijo method
+class PuntoFijoModel(BaseModel):
+    funcion: str
+    a: float
+    error_max: float = 1e-8
+    max_iter: int = 100
+
+
+@app.post("/punto_fijo")
+def calcular_punto_fijo(data: PuntoFijoModel):
+    return pf_method(data)
 
 #Falsa-Posicion method
 class FakePositionModel(BaseModel):

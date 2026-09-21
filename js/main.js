@@ -74,7 +74,7 @@ parc1Button.addEventListener("click", () => {
     });
     buttons[5].addEventListener("click", () => {
         article.innerHTML = "";
-        console.log(buttons[5]);
+        punto_fijo_init();
     });
     buttons[6].addEventListener("click", () => {
         article.innerHTML = "";
