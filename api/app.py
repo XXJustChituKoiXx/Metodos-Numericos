@@ -7,6 +7,7 @@ from parcial1.punto_fijo import pf_method
 from parcial1.falsa_posicion import fake_position_metod
 from parcial1.newthon_raphson import newton_raphson
 from parcial1.muller import muller_method
+from parcial1.horner import horner_method
 
 #crea la fakin app del server
 app = FastAPI()
@@ -90,6 +91,19 @@ class MullerModel(BaseModel):
 @app.post("/muller")
 def calcular_Muller(data: MullerModel):
     return muller_method(data)
+
+
+#horner method
+class HornerModel(BaseModel):
+    coeficientes: str
+    a: float
+    error_max: float = 1e-8
+    max_iter: int = 100
+
+
+@app.post("/horner")
+def calcular_horner(data: HornerModel):
+    return horner_method(data)
 
 
 @app.post("/")
