@@ -60,7 +60,7 @@ export function float_to_bin_init(){
     inputPrecicion.max = 64;
     inputPrecicion.step = 16;
 
-    errorPrecision.style.display = "none";
+    errorMessage.style.display = "none";
 
     inputDiv.appendChild(titleH2);
     inputDiv.appendChild(label1);

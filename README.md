@@ -9,6 +9,7 @@ Metodos
 ⚠️-en produccion
 ❗-no empezado
 
+Metodos Numericos
 -Flotante a Bin    RICARDO  ✅
 -Biseccion         ISIS     ✅ 
 -Secante           FERNANDO ✅
@@ -19,6 +20,12 @@ Metodos
 -Deflacion         ISIS     ✅  
 -Horner            FERNANDO ❗
 -Muller            RICARDO  ✅
+
+Interpolaciones
+-Lagrange                   FERNANDO    ❗
+-Neville                    ISIS        ❗
+-Diferiencias divididas     RICARDO     ❗
+-Igualmente espaciados      ISIS        ❗
 
 Programas pa testear
 - Postman

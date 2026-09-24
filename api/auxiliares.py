@@ -1,6 +1,7 @@
 import math
 import cmath
 from types import MethodType
+from sympy.parsing.sympy_parser import (parse_expr,standard_transformations,implicit_multiplication_application)
 
 FUNCIONES_PERMITIDAS = {
     "sin": math.sin,
@@ -19,19 +20,20 @@ FUNCIONES_PERMITIDAS = {
 }
 
 def construir_funcion(expresion: str):
-    """Convierte el string del usuario en una funcion de Python.
+    transformaciones = standard_transformations + (
+        implicit_multiplication_application,
+    )
 
-    Se evalua con un entorno restringido: sin builtins y solo con las
-    funciones matematicas del diccionario de funciones permitidas. Esto evita que alguien
-    mande codigo arbitrario en la expresion.
-    """
-    def f(x: float) -> float:
-        entorno = dict(FUNCIONES_PERMITIDAS) #Copia del diccionario de funciones permitidas
-        entorno["x"] = x
-        resultado = eval(expresion, entorno)
-        return float(resultado)
+    funcion = parse_expr(
+        expresion,
+        transformations=transformaciones
+    )
+
+    def f(x):
+        return float(funcion.subs("x", x))
 
     return f
+
 
 class Polinomio:
     def __init__(self, grado, coeficientes, funcion=None,raices=None):
@@ -236,3 +238,4 @@ def convertir_complex(valor):
         }
 
     return valor
+
