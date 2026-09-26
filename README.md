@@ -16,7 +16,7 @@ Metodos Numericos
 -Falsa posicion    RICARDO  ✅
 -Newton-Raphson    RICARDO  ✅
 -Punto Fijo        FERNANDO ⚠️  Pushear
--Steffensen        ISIS     ⚠️  En produccion
+-Steffensen        ISIS     ✅
 -Deflacion         ISIS     ✅  
 -Horner            FERNANDO ❗
 -Muller            RICARDO  ✅

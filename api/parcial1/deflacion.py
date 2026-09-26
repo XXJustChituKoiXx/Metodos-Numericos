@@ -13,7 +13,7 @@ import cmath
 ruta_api = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(ruta_api)
 
-from auxiliares import Polinomio
+from polinomio import Polinomio
 from auxiliares import crear_funcion_compleja,convertir_complex
 from .muller import muller_method
 from modelos import MullerModel
