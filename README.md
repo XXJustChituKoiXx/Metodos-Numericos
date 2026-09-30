@@ -26,6 +26,8 @@ Interpolaciones
 -Neville                    ISIS        ❗
 -Diferiencias divididas     RICARDO     ⚠️ TODO ALV
 -Igualmente espaciados      ISIS        ❗
+-Hermite                    FERNANDO    ❗
+-Splines Cubicos            RICARDO     ❗
 
 Programas pa testear
 - Postman
