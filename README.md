@@ -15,19 +15,19 @@ Metodos Numericos
 -Secante           FERNANDO ✅
 -Falsa posicion    RICARDO  ✅
 -Newton-Raphson    RICARDO  ✅
--Punto Fijo        FERNANDO ⚠️ Merge
+-Punto Fijo        FERNANDO ✅ 
 -Steffensen        ISIS     ✅
 -Deflacion         ISIS     ✅  
--Horner            FERNANDO ⚠️ Merge
+-Horner            FERNANDO ✅ 
 -Muller            RICARDO  ✅
 
 Interpolaciones
 -Lagrange                   FERNANDO    ❗
 -Neville                    ISIS        ❗
--Diferiencias divididas     RICARDO     ⚠️ TODO ALV
+-Diferiencias divididas     RICARDO     ⚠️ Ibterfaz Grafica
 -Igualmente espaciados      ISIS        ❗
 -Hermite                    FERNANDO    ❗
--Splines Cubicos            RICARDO     ❗
+-Splines Cubicos            RICARDO     ⚠️ TODO ALV
 
 Programas pa testear
 - Postman
