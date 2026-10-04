@@ -7,6 +7,7 @@ from parcial1.punto_fijo import pf_method
 from parcial1.falsa_posicion import fake_position_metod
 from parcial1.newthon_raphson import newton_raphson
 from parcial1.muller import muller_method
+from parcial1.horner import horner_method
 from parcial1.deflacion import ctr_deflacion
 from parcial1.bisexion import biseccion
 from parcial1.steffensen import ctr_Steff
@@ -115,13 +116,6 @@ class MullerModel(BaseModel):
 def calcular_Muller(data: MullerModel):
     return muller_method(data)
 
-#deflacion metodo
-class DeflacionModel(BaseModel):
-    function: str
-    coeficientes: list[complex]   # grande -> pequeño
-    grado: int
-    error_max: float = 1e-8
-    max_iter: int = 100
 
 @app.post("/deflacion")
 def calcular_Deflacion(data: DeflacionModel):
