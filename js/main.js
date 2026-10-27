@@ -9,6 +9,7 @@ import { horner_init } from "./metodos/horner-init.js";
 import {deflacion_init} from "./metodos/deflacion.js";
 import {biseccion_init} from "./metodos/biseccion.js";
 import {steffensen_init} from "./metodos/steffensen.js";
+import { lagrange_init } from "./metodos/lagrange-init.js";
 
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
@@ -102,6 +103,20 @@ parc1Button.addEventListener("click", () => {
 parc2Button.addEventListener("click", () => {
     aside.innerHTML = "";
     article.innerHTML = "";
+
+    const menuMethods = [
+        {"text" : "Lagrange"}
+    ];
+
+    const menuButtons = createMenuButton("div","menu-metodos","menu-metodos","methods-parc2-btn",menuMethods);
+    const buttons = menuButtons.querySelectorAll(".methods-parc2-btn");
+
+    buttons[0].addEventListener("click", () => {
+        article.innerHTML = "";
+        lagrange_init();
+    });
+
+    aside.appendChild(menuButtons);
 });
 
 parc3Button.addEventListener("click", () => {

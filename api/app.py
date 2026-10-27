@@ -11,6 +11,7 @@ from parcial1.horner import horner_method
 from parcial1.deflacion import ctr_deflacion
 from parcial1.bisexion import biseccion
 from parcial1.steffensen import ctr_Steff
+from parcial2.lagrange import lagrange_method
 
 #crea la fakin app del server
 app = FastAPI()
@@ -115,6 +116,16 @@ class MullerModel(BaseModel):
 @app.post("/muller")
 def calcular_Muller(data: MullerModel):
     return muller_method(data)
+
+
+#Lagrange method
+class LagrangeModel(BaseModel):
+    puntos: list | str  # [[x, y], ...] o el texto "1,2 ; 2,5"
+    x_evaluar: float | None = None
+
+@app.post("/lagrange")
+def calcular_lagrange(data: LagrangeModel):
+    return lagrange_method(data)
 
 
 @app.post("/deflacion")
