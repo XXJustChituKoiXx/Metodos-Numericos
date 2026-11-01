@@ -9,6 +9,7 @@ import { horner_init } from "./metodos/horner-init.js";
 import {deflacion_init} from "./metodos/deflacion.js";
 import {biseccion_init} from "./metodos/biseccion.js";
 import {steffensen_init} from "./metodos/steffensen.js";
+import {lagrange_init} from "./interpolacion/lagrange-init.js";
 
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
@@ -100,8 +101,25 @@ parc1Button.addEventListener("click", () => {
 });
 
 parc2Button.addEventListener("click", () => {
+    //vacear el aside y el article para cambiar de parcial o metodo
     aside.innerHTML = "";
     article.innerHTML = "";
+
+    //arreglo de metodos a agregar
+    const menuMethods = [
+        {"text" : "Lagrange"}
+    ];
+
+    //crea los elementos de este parcial
+    const menuButtons = createMenuButton("div","menu-metodos","menu-metodos","methods-parc1-btn",menuMethods);
+    const buttons = menuButtons.querySelectorAll(".methods-parc1-btn");
+
+    buttons[0].addEventListener("click", () => {
+        article.innerHTML = "";
+        lagrange_init();
+    });
+
+    aside.appendChild(menuButtons);
 });
 
 parc3Button.addEventListener("click", () => {

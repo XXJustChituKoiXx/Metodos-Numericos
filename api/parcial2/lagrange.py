@@ -1,6 +1,5 @@
 from polinomio import Polinomio
  
- 
 def parsear_puntos(dato) -> list:
     """Convierte la entrada del usuario en una lista [[x, y], ...].
  
