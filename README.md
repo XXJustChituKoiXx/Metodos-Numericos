@@ -3,6 +3,7 @@ pip install fastapi
 python -m uvicorn app:app --reload
 python -m uvicorn api.app:app --reload
 pip install sympy
+-Librerias de js
 
 Metodos
 ✅-terminado
@@ -22,7 +23,7 @@ Metodos Numericos
 -Muller            RICARDO  ✅
 
 Interpolaciones
--Lagrange                   FERNANDO    ❗
+-Lagrange                   FERNANDO    ⚠️ Solo falta grafica con chart js
 -Neville                    ISIS        ❗
 -Diferiencias divididas     RICARDO     ⚠️ Ibterfaz Grafica
 -Igualmente espaciados      ISIS        ❗

@@ -5,18 +5,21 @@ import {
     createButton,
     createDiv,
     createSpan,
-    createGenericTable
+    createGenericTable,
+    createPolynomial,
+    createChartCanvas
 } from "../factories.js";
-import { mostrarError, formatearNumero, formatearPolinomio } from "../auxiliares.js";
+import { mostrarError, formatearNumero, renderizarGraficaLagrange } from "../auxiliares.js";
 import { conectApi } from "../conection.js";
  
 export function lagrange_init() {
     const article = document.querySelector("article");
+    article.innerHTML = "";
  
+    // arma la seccion de los inputs
     const sectionInput = createSection("main-section-lagrange", "main-section-lagrange");
     const inputDiv = createDiv("input-section-lagrange", "inputs-div");
     const titleH2 = document.createElement("h2");
- 
     titleH2.textContent = "Interpolacion de Lagrange";
  
     const labelPuntos = createLabel(
@@ -27,19 +30,31 @@ export function lagrange_init() {
     );
  
     const contenedorPuntos = createDiv("contenedor-filas-puntos", "contenedor-filas");
-    contenedorPuntos.style.display = "flex";
-    contenedorPuntos.style.flexDirection = "column";
-    contenedorPuntos.style.gap = "8px";
-    contenedorPuntos.style.margin = "10px 0";
+    contenedorPuntos.className = "contenedor-filas";
 
     const btnAgregar = createButton("btn-agregar-punto", "+ Agregar Punto");
+    btnAgregar.className = "send-button btn-azul";
     btnAgregar.type = "button";
 
+    // actualiza la visibilidad de los botones de eliminar segun la cantidad de filas
+    function actualizarBotonesEliminar() {
+        const filas = contenedorPuntos.querySelectorAll(".fila-punto");
+        filas.forEach((fila, index) => {
+            const btnEliminar = fila.querySelector(".btn-eliminar-fila");
+            if (btnEliminar) {
+                if (filas.length > 2 && index >= 2) {
+                    btnEliminar.style.display = "inline-block";
+                } else {
+                    btnEliminar.style.display = "none";
+                }
+            }
+        });
+    }
+
+    // crea una fila nueva con sus inputs para x e y alineados en la misma linea
     function agregarFilaPuntos(valX = "", valY = "") {
         const filaDiv = createDiv("", "fila-punto");
-        filaDiv.style.display = "flex";
-        filaDiv.style.gap = "10px";
-        filaDiv.style.alignItems = "center";
+        filaDiv.className = "fila-punto";
 
         const inputX = createInput("", "input-text", "number", "Valor X");
         inputX.value = valX;
@@ -50,15 +65,14 @@ export function lagrange_init() {
         inputY.step = "any";
 
         const btnEliminar = createButton("btn-eliminar-fila", "X");
-        btnEliminar.style.backgroundColor = "#ff4d4d";
-        btnEliminar.style.color = "white";
+        btnEliminar.className = "btn-eliminar-fila btn-azul-eliminar";
         btnEliminar.type = "button";
         
+        // borra la fila al hacer clic
         btnEliminar.addEventListener("click", () => {
             if (contenedorPuntos.children.length > 2) {
                 filaDiv.remove();
-            } else {
-                alert("Debes mantener al menos 2 puntos para interpolar.");
+                actualizarBotonesEliminar();
             }
         });
 
@@ -66,11 +80,13 @@ export function lagrange_init() {
         filaDiv.appendChild(inputY);
         filaDiv.appendChild(btnEliminar);
         contenedorPuntos.appendChild(filaDiv);
+        actualizarBotonesEliminar();
     }
 
     agregarFilaPuntos();
     agregarFilaPuntos();
 
+    // añade otra fila al hacer clic en el boton
     btnAgregar.addEventListener("click", () => {
         agregarFilaPuntos();
     });
@@ -111,6 +127,7 @@ export function lagrange_init() {
     sectionInput.appendChild(inputDiv);
     article.appendChild(sectionInput);
  
+    // valida y manda los datos al apretar calcular
     buttonSend.addEventListener("click", async () => {
         errorMensaje.style.display = "none";
         const xEvaluar = inputEvaluar.value;
@@ -170,16 +187,21 @@ export function lagrange_init() {
 export function lagrange_result(data) {
     const article = document.querySelector("article");
  
-    const anterior = document.getElementById("result-section-lagrange");
-    if (anterior) {
-        anterior.remove();
-    }
+    // borra los resultados viejos si ya existian
+    const anteriorRes = document.getElementById("result-section-lagrange");
+    if (anteriorRes) anteriorRes.remove();
+
+    const anteriorGraf = document.getElementById("grafica-section-lagrange");
+    if (anteriorGraf) anteriorGraf.remove();
  
+    // arma la seccion de resultados
     const sectionResult = createSection("result-section-lagrange", "main-section-lagrange");
-    const resultDiv = createDiv("result-div-lagrange", "inputs-div");
+    sectionResult.className = "main-section-lagrange section-resultados";
+    
+    const resultDiv = createDiv("result-div-lagrange", "inputs-div container-res");
+    
     const titleH2 = document.createElement("h2");
- 
-    titleH2.textContent = "Resultados";
+    titleH2.textContent = "Resultados del Polinomio";
     resultDiv.appendChild(titleH2);
  
     if (!data.coeficientes || data.coeficientes.length === 0) {
@@ -194,32 +216,34 @@ export function lagrange_result(data) {
         return;
     }
  
-    const polinomioTexto = formatearPolinomio(data.coeficientes);
-    const polinomioSpan = createSpan(
-        "polinomio-lagrange",
-        "resultado-texto",
-        "P(x) = " + polinomioTexto
-    );
-    resultDiv.appendChild(polinomioSpan);
+    // muestra la tarjeta con el polinomio final
+    const cardPolinomio = createDiv("", "resultado-card");
+    const labelPoly = createLabel("", "", "", "Polinomio Interpolante P(x):");
+    cardPolinomio.appendChild(labelPoly);
+    const polyElement = createPolynomial("polinomio-lagrange", "resultado-polinomio", data.coeficientes);
+    cardPolinomio.appendChild(polyElement);
+    resultDiv.appendChild(cardPolinomio);
  
-    if (data.grado !== null && data.grado !== undefined) {
-        const gradoSpan = createSpan(
-            "grado-lagrange",
-            "resultado-texto",
-            "Grado: " + data.grado
-        );
-        resultDiv.appendChild(gradoSpan);
-    }
+    // muestra la tarjeta con el grado y la evaluacion
+    const cardInfo = createDiv("", "resultado-card");
+    const gradoSpan = createSpan(
+        "grado-lagrange",
+        "resultado-texto",
+        "Grado del polinomio: " + data.grado
+    );
+    cardInfo.appendChild(gradoSpan);
  
     if (data.evaluacion) {
         const evalSpan = createSpan(
             "evaluacion-lagrange",
             "resultado-texto",
-            "P(" + formatearNumero(data.evaluacion.x) + ") = " + formatearNumero(data.evaluacion.y)
+            `Evaluación -> P(${formatearNumero(data.evaluacion.x)}) = ${formatearNumero(data.evaluacion.y)}`
         );
-        resultDiv.appendChild(evalSpan);
+        cardInfo.appendChild(evalSpan);
     }
+    resultDiv.appendChild(cardInfo);
  
+    // arma la tabla con los polinomios base
     const encabezados = ["i", "x(i)", "y(i)", "L(i)(x)"];
     
     const tablaFormateada = data.tabla.map(fila => {
@@ -227,7 +251,7 @@ export function lagrange_result(data) {
             fila[0],
             fila[1],
             fila[2],
-            formatearPolinomio(fila[3])
+            fila[3]
         ];
     });
 
@@ -236,15 +260,28 @@ export function lagrange_result(data) {
         "tabla-iteraciones",
         encabezados,
         tablaFormateada,
-        (valor, indiceCol) => {
-            if (indiceCol === 0 || indiceCol === 3) {
-                return valor;
+        (valor, indiceCol, indiceFila) => {
+            if (indiceCol === 0) return valor;
+            if (indiceCol === 1 || indiceCol === 2) return formatearNumero(valor);
+            if (indiceCol === 3) {
+                return createPolynomial("", "poly-celda", valor);
             }
-            return formatearNumero(valor);
+            return valor;
         }
     );
  
     resultDiv.appendChild(tabla);
     sectionResult.appendChild(resultDiv);
     article.appendChild(sectionResult);
+
+    // crea la seccion de la grafica usando el factory
+    const sectionGrafica = createChartCanvas(
+        "grafica-section-lagrange", 
+        "lagrangeChart", 
+        "Gráfica del Polinomio"
+    );
+    article.appendChild(sectionGrafica);
+
+    // dibuja la grafica usando la funcion importada desde auxiliares
+    renderizarGraficaLagrange("lagrangeChart", data.tabla.map(f => [f[1], f[2]]), data.coeficientes);
 }

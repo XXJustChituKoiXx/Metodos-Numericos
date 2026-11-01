@@ -76,3 +76,90 @@ export function formatearPolinomio(coeficientes) {
     }
     return texto;
 }
+
+// renderiza cualquier grafica de chart.js de forma generica
+export function renderizarGraficaGenerica(canvasId, datasetsPersonalizados, opcionesExtras = {}) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    if (window[canvasId + "Instance"] instanceof Chart) {
+        window[canvasId + "Instance"].destroy();
+    }
+
+    const ctx = canvas.getContext('2d');
+    
+    window[canvasId + "Instance"] = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: datasetsPersonalizados
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                y: {
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                }
+            },
+            ...opcionesExtras
+        }
+    });
+}
+
+// renderiza la grafica especifica para el metodo de lagrange
+export function renderizarGraficaLagrange(canvasId, puntosOriginales, coeficientes) {
+    const xs = puntosOriginales.map(p => p[0]);
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+
+    function evaluarPolinomio(coefs, x) {
+        let y = 0;
+        let n = coefs.length - 1;
+        for (let i = 0; i < coefs.length; i++) {
+            let grado = n - i;
+            y += coefs[i] * Math.pow(x, grado);
+        }
+        return y;
+    }
+
+    const puntosCurva = [];
+    const pasos = 100;
+    const margen = (maxX - minX) * 0.1 || 1;
+    const inicio = minX - margen;
+    const fin = maxX + margen;
+    const paso = (fin - inicio) / pasos;
+
+    for (let i = 0; i <= pasos; i++) {
+        let x = inicio + i * paso;
+        let y = evaluarPolinomio(coeficientes, x);
+        puntosCurva.push({ x: x, y: y });
+    }
+
+    const puntosDataset = puntosOriginales.map(p => ({ x: p[0], y: p[1] }));
+
+    const datasets = [
+        {
+            label: 'Polinomio P(x)',
+            data: puntosCurva,
+            type: 'line',
+            borderColor: '#3b82f6',
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0
+        },
+        {
+            label: 'Puntos Originales',
+            data: puntosDataset,
+            backgroundColor: '#f57eb6',
+            pointRadius: 6,
+            pointHoverRadius: 8
+        }
+    ];
+
+    renderizarGraficaGenerica(canvasId, datasets);
+}

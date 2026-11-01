@@ -92,7 +92,7 @@ article {
     gap: 1rem;
 }
 
-/* BOTONES DE LOS PARCIALES */
+/* define los botones de los parciales */
 
 nav {
     display: flex;
@@ -136,7 +136,7 @@ button.parc:active {
     box-shadow: 0 0 0 transparent;
 }
 
-/* MENU DEL ASIDE */
+/* da estilo al menu lateral del aside */
 
 .menu-metodos {
     display: flex;
@@ -181,7 +181,7 @@ button.parc:active {
     box-shadow: none;
 }
 
-/* SECCIONES */
+/* configura las secciones principales */
 
 section {
     width: 100%;
@@ -193,7 +193,7 @@ section {
     padding: 1.5rem;
 }
 
-/* CONTENEDORES */
+/* controla los contenedores */
 
 .container-div {
     width: 100%;
@@ -211,7 +211,7 @@ section {
     width: 100%;
 }
 
-/* TITULOS */
+/* da formato a los titulos */
 
 h2 {
     margin-bottom: 1.2rem;
@@ -227,7 +227,7 @@ h2 {
     margin-bottom: 1.2rem;
 }
 
-/* LABELS */
+/* da estilo a las etiquetas */
 
 label {
     display: block;
@@ -241,7 +241,7 @@ label {
     font-weight: bold;
 }
 
-/* INPUTS */
+/* diseña los inputs de texto y numeros */
 
 input {
     width: 100%;
@@ -277,7 +277,7 @@ input:focus {
     box-shadow: 0 0 5px var(--accent);
 }
 
-/* BOTON CALCULAR */
+/* da estilo al boton de calcular */
 
 .send-button {
     align-self: flex-start;
@@ -316,7 +316,7 @@ input:focus {
     box-shadow: 0 0 0 transparent;
 }
 
-/* MENSAJES DE ERROR */
+/* muestra los mensajes de error */
 
 .error-message {
     color: var(--accent);
@@ -327,7 +327,7 @@ input:focus {
     margin-bottom: 0.4rem;
 }
 
-/* TOGGLE */
+/* arma el switch del tema claro/oscuro */
 
 .theme-switch {
     display: inline-block;
@@ -344,7 +344,7 @@ input:focus {
     display: none;
 }
 
-/* SLIDER */
+/* diseña el deslizador del switch */
 
 .slider {
     background-color: #202a3a;
@@ -392,7 +392,7 @@ input:checked + .slider:before {
     transform: translateX(24px);
 }
 
-/* TABLAS resultados */
+/* da formato a las tablas de resultados */
 
 table {
     width: 100%;
@@ -437,7 +437,7 @@ table {
     color: var(--btn-hover-text);
 }
 
-/* RESULTADOS */
+/* organiza los resultados */
 
 .section-resultados {
     min-height: auto;
@@ -447,7 +447,7 @@ table {
     gap: 0.8rem;
 }
 
-/* RESPONSIVE */
+/* ajusta el diseño para pantallas pequeñas */
 
 @media (max-width: 767px) {
     body {
@@ -485,4 +485,119 @@ table {
         overflow-x: auto;
         white-space: nowrap;
     }
+}
+
+/* alinea las parejas de inputs x e y */
+
+.contenedor-filas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.fila-punto {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.fila-punto input {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+/* da color azul al boton de agregar */
+
+.btn-azul {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 3px 0 #3b82f6 !important;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-azul:hover {
+    background-color: #3b82f6 !important;
+    color: var(--bg-primary) !important;
+    border-color: #3b82f6 !important;
+}
+
+/* da estilo azul al boton de eliminar punto */
+
+.btn-azul-eliminar {
+    background-color: var(--bg-primary);
+    color: #3b82f6;
+    border: 2px solid #3b82f6;
+    border-radius: 4px;
+    padding: 0.5rem 0.8rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--theme-transition);
+    box-shadow: 0 3px 0 #3b82f6;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.btn-azul-eliminar:hover {
+    background-color: #3b82f6;
+    color: var(--bg-primary);
+}
+
+.btn-azul-eliminar:active {
+    top: 3px;
+    box-shadow: 0 0 0 transparent;
+}
+
+/* diseña las tarjetas de resultados */
+
+.resultado-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transition: var(--theme-transition);
+}
+
+.polynomial-container {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    flex-wrap: wrap;
+    font-family: inherit;
+}
+
+.poly-celda {
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.poly-exponent {
+    font-size: 0.7rem;
+    vertical-align: super;
+}
+
+/* prepara el contenedor para la grafica */
+
+.grafica-container {
+    width: 100%;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem;
 }
