@@ -25,10 +25,8 @@ from parcial1.bisexion import biseccion
 from parcial1.steffensen import ctr_Steff
 from parcial2.lagrange import lagrange_method
 
-# crea la fakin app del server
 app = FastAPI()
 
-# configuracion del corse para que no pete con el frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

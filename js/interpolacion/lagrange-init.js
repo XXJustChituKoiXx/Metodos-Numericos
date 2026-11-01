@@ -7,9 +7,8 @@ import {
     createSpan,
     createGenericTable
 } from "../factories.js";
-import { mostrarError, formatearNumero } from "../auxiliares.js";
+import { mostrarError, formatearNumero, formatearPolinomio } from "../auxiliares.js";
 import { conectApi } from "../conection.js";
- 
  
 export function lagrange_init() {
     const article = document.querySelector("article");
@@ -23,16 +22,58 @@ export function lagrange_init() {
     const labelPuntos = createLabel(
         "label-puntos-lagrange",
         "label-input",
-        "input-puntos-lagrange",
-        "Puntos (x,y) separados por punto y coma:"
+        "",
+        "Ingrese los puntos (x, y):"
     );
  
-    const inputPuntos = createInput(
-        "input-puntos-lagrange",
-        "input-text",
-        "text",
-        "Ej: 1,2 ; 2,5 ; 4,17"
-    );
+    const contenedorPuntos = createDiv("contenedor-filas-puntos", "contenedor-filas");
+    contenedorPuntos.style.display = "flex";
+    contenedorPuntos.style.flexDirection = "column";
+    contenedorPuntos.style.gap = "8px";
+    contenedorPuntos.style.margin = "10px 0";
+
+    const btnAgregar = createButton("btn-agregar-punto", "+ Agregar Punto");
+    btnAgregar.type = "button";
+
+    function agregarFilaPuntos(valX = "", valY = "") {
+        const filaDiv = createDiv("", "fila-punto");
+        filaDiv.style.display = "flex";
+        filaDiv.style.gap = "10px";
+        filaDiv.style.alignItems = "center";
+
+        const inputX = createInput("", "input-text", "number", "Valor X");
+        inputX.value = valX;
+        inputX.step = "any";
+
+        const inputY = createInput("", "input-text", "number", "Valor Y");
+        inputY.value = valY;
+        inputY.step = "any";
+
+        const btnEliminar = createButton("btn-eliminar-fila", "X");
+        btnEliminar.style.backgroundColor = "#ff4d4d";
+        btnEliminar.style.color = "white";
+        btnEliminar.type = "button";
+        
+        btnEliminar.addEventListener("click", () => {
+            if (contenedorPuntos.children.length > 2) {
+                filaDiv.remove();
+            } else {
+                alert("Debes mantener al menos 2 puntos para interpolar.");
+            }
+        });
+
+        filaDiv.appendChild(inputX);
+        filaDiv.appendChild(inputY);
+        filaDiv.appendChild(btnEliminar);
+        contenedorPuntos.appendChild(filaDiv);
+    }
+
+    agregarFilaPuntos();
+    agregarFilaPuntos();
+
+    btnAgregar.addEventListener("click", () => {
+        agregarFilaPuntos();
+    });
  
     const labelEvaluar = createLabel(
         "label-evaluar-lagrange",
@@ -47,22 +88,21 @@ export function lagrange_init() {
         "number",
         "Ej: 3"
     );
+    inputEvaluar.step = "any";
  
     const errorMensaje = createSpan(
         "error-lagrange",
         "error-message",
         ""
     );
+    errorMensaje.style.display = "none";
  
     const buttonSend = createButton("send-button", "Calcular");
  
-    inputEvaluar.step = "any";
- 
-    errorMensaje.style.display = "none";
- 
     inputDiv.appendChild(titleH2);
     inputDiv.appendChild(labelPuntos);
-    inputDiv.appendChild(inputPuntos);
+    inputDiv.appendChild(contenedorPuntos);
+    inputDiv.appendChild(btnAgregar);
     inputDiv.appendChild(labelEvaluar);
     inputDiv.appendChild(inputEvaluar);
     inputDiv.appendChild(errorMensaje);
@@ -72,51 +112,44 @@ export function lagrange_init() {
     article.appendChild(sectionInput);
  
     buttonSend.addEventListener("click", async () => {
-        const texto = inputPuntos.value.trim();
+        errorMensaje.style.display = "none";
         const xEvaluar = inputEvaluar.value;
  
-        if (texto === "") {
-            mostrarError(errorMensaje, "Escriba al menos dos puntos.");
-            return;
-        }
- 
-        // Cada par viene separado por ';' y dentro lleva x,y
-        const pares = texto.split(";").filter((p) => p.trim() !== "");
- 
-        if (pares.length < 2) {
-            mostrarError(errorMensaje, "Escriba al menos dos puntos, separados por punto y coma.");
-            return;
-        }
- 
+        const filas = contenedorPuntos.querySelectorAll(".fila-punto");
         const puntos = [];
         const vistas = [];
- 
-        for (const par of pares) {
-            const partes = par.replace(/[()]/g, "").split(",").filter((c) => c.trim() !== "");
- 
-            if (partes.length !== 2) {
-                mostrarError(errorMensaje, "Cada punto debe tener dos numeros, por ejemplo 1,2");
+
+        for (const fila of filas) {
+            const inputs = fila.querySelectorAll("input");
+            const valX = inputs[0].value.trim();
+            const valY = inputs[1].value.trim();
+
+            if (valX === "" || valY === "") {
+                mostrarError(errorMensaje, "Complete todos los campos de x e y.");
                 return;
             }
- 
-            const x = Number(partes[0]);
-            const y = Number(partes[1]);
- 
+
+            const x = Number(valX);
+            const y = Number(valY);
+
             if (!isFinite(x) || !isFinite(y)) {
-                mostrarError(errorMensaje, "Los puntos deben ser numeros.");
+                mostrarError(errorMensaje, "Los valores deben ser números válidos.");
                 return;
             }
- 
+
             if (vistas.includes(x)) {
-                mostrarError(errorMensaje, "La x = " + x + " esta repetida. Cada x debe aparecer una sola vez.");
+                mostrarError(errorMensaje, `La x = ${x} está repetida. Cada x debe ser única.`);
                 return;
             }
- 
+
             vistas.push(x);
             puntos.push([x, y]);
         }
- 
-        errorMensaje.style.display = "none";
+
+        if (puntos.length < 2) {
+            mostrarError(errorMensaje, "Debe ingresar al menos dos puntos.");
+            return;
+        }
  
         const body = JSON.stringify({
             "puntos": puntos,
@@ -134,7 +167,6 @@ export function lagrange_init() {
     });
 }
  
- 
 export function lagrange_result(data) {
     const article = document.querySelector("article");
  
@@ -150,11 +182,11 @@ export function lagrange_result(data) {
     titleH2.textContent = "Resultados";
     resultDiv.appendChild(titleH2);
  
-    if (data.polinomio === null || data.polinomio === undefined) {
+    if (!data.coeficientes || data.coeficientes.length === 0) {
         const aviso = createSpan(
             "aviso-lagrange",
             "error-message",
-            data.mensaje ? data.mensaje : "No se pudo construir el polinomio."
+            "No se pudo construir el polinomio."
         );
         resultDiv.appendChild(aviso);
         sectionResult.appendChild(resultDiv);
@@ -162,10 +194,11 @@ export function lagrange_result(data) {
         return;
     }
  
+    const polinomioTexto = formatearPolinomio(data.coeficientes);
     const polinomioSpan = createSpan(
         "polinomio-lagrange",
         "resultado-texto",
-        "P(x) = " + data.polinomio
+        "P(x) = " + polinomioTexto
     );
     resultDiv.appendChild(polinomioSpan);
  
@@ -187,24 +220,23 @@ export function lagrange_result(data) {
         resultDiv.appendChild(evalSpan);
     }
  
-    if (data.mensaje) {
-        const mensajeSpan = createSpan(
-            "mensaje-lagrange",
-            "resultado-texto",
-            data.mensaje
-        );
-        resultDiv.appendChild(mensajeSpan);
-    }
- 
     const encabezados = ["i", "x(i)", "y(i)", "L(i)(x)"];
- 
+    
+    const tablaFormateada = data.tabla.map(fila => {
+        return [
+            fila[0],
+            fila[1],
+            fila[2],
+            formatearPolinomio(fila[3])
+        ];
+    });
+
     const tabla = createGenericTable(
         "tabla-lagrange",
         "tabla-iteraciones",
         encabezados,
-        data.tabla,
+        tablaFormateada,
         (valor, indiceCol) => {
-            // la columna 0 es el indice y la 3 es texto, esas no se formatean
             if (indiceCol === 0 || indiceCol === 3) {
                 return valor;
             }
@@ -213,8 +245,6 @@ export function lagrange_result(data) {
     );
  
     resultDiv.appendChild(tabla);
- 
     sectionResult.appendChild(resultDiv);
     article.appendChild(sectionResult);
 }
- 

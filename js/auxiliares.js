@@ -31,5 +31,48 @@ export function formatearNumero(valor) {
         return valor.toExponential(4);
     }
 
-    return valor.toFixed(6);
+    if (Math.abs(valor - Math.round(valor)) < 1e-9) {
+        return Math.round(valor).toString();
+    }
+
+    return Number(valor.toFixed(6)).toString();
+}
+
+export function formatearPolinomio(coeficientes) {
+    let terminos = [];
+    let n = coeficientes.length - 1;
+
+    for (let i = 0; i < coeficientes.length; i++) {
+        let c = coeficientes[i];
+        if (Math.abs(c) < 1e-12) continue;
+
+        let grado = n - i;
+        let coefStr = "";
+
+        if (grado === 0) {
+            terminos.push(formatearNumero(c));
+        } else {
+            if (Math.abs(Math.abs(c) - 1) < 1e-12) {
+                coefStr = c < 0 ? "-" : "";
+            } else {
+                coefStr = formatearNumero(c) + "*";
+            }
+
+            let xStr = grado === 1 ? "x" : "x**" + grado;
+            terminos.push(coefStr + xStr);
+        }
+    }
+
+    if (terminos.length === 0) return "0";
+
+    let texto = terminos[0];
+    for (let i = 1; i < terminos.length; i++) {
+        let t = terminos[i];
+        if (t.startsWith("-")) {
+            texto += " - " + t.substring(1);
+        } else {
+            texto += " + " + t;
+        }
+    }
+    return texto;
 }
