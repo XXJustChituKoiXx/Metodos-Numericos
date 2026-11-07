@@ -1,73 +1,93 @@
--Libreerias de Python
+# Métodos Numéricos
+
+## Instalación
+
+```bash
 pip install fastapi
 python -m uvicorn app:app --reload
 python -m uvicorn api.app:app --reload
 pip install sympy
+```
 
-Metodos
-✅-terminado
-⚠️-en produccion
-❗-no empezado
+## Estado de los métodos
 
-###Metodos Numericos (para raices)
--Flotante a Bin    RICARDO  ✅
--Biseccion         ISIS     ✅ 
--Secante           FERNANDO ✅
--Falsa posicion    RICARDO  ✅
--Newton-Raphson    RICARDO  ✅
--Punto Fijo        FERNANDO ✅ 
--Steffensen        ISIS     ✅
--Deflacion         ISIS     ✅  
--Horner            FERNANDO ✅ 
--Muller            RICARDO  ✅
+| Símbolo | Significado |
+|:---:|---|
+| ✅ | Terminado |
+| ⚠️ | En producción |
+| ❗ | No empezado |
 
-###Interpolaciones
--Lagrange                   FERNANDO    ⚠️
--Neville                    ISIS        ⚠️  Interfaz, conectar con pagina
--Diferiencias divididas     RICARDO     ⚠️ Ibterfaz Grafica
--Igualmente espaciados      ISIS        ⚠️
--Hermite                    FERNANDO    ❗
--Splines Cubicos            RICARDO     ⚠️ TODO ALV
+## Métodos numéricos (para raíces)
 
-###Derivacion
--Formula de 2 puntos (Hacer serie de Taylor tmb)    ISIS        ❗                
--Formula 2 puntos igual espacia                     FERNANDO    ❗
--Formula 3 puntos igual espacia                     RICARDO     ❗
+| Método | Responsable | Estado |
+|---|---|:---:|
+| Flotante a Bin | RICARDO | ✅ |
+| Bisección | ISIS | ✅ |
+| Secante | FERNANDO | ✅ |
+| Falsa posición | RICARDO | ✅ |
+| Newton-Raphson | RICARDO | ✅ |
+| Punto Fijo | FERNANDO | ✅ |
+| Steffensen | ISIS | ✅ |
+| Deflación | ISIS | ✅ |
+| Horner | FERNANDO | ✅ |
+| Müller | RICARDO | ✅ |
 
-###Integracion
+## Interpolaciones
 
--Trapecio (simple y compuesto)              ISIS        ❗                
--Simpson 1/3 (simple y compuesto)           FERNANDO    ❗
--Simpson 3/8 (simple y compuesto)           RICARDO     ❗
+| Método | Responsable | Estado | Notas |
+|---|---|:---:|---|
+| Lagrange | FERNANDO | ⚠️ | |
+| Neville | ISIS | ⚠️ | Interfaz, conectar con página |
+| Diferencias divididas | RICARDO | ⚠️ | Interfaz gráfica |
+| Igualmente espaciados | ISIS | ⚠️ | |
+| Hermite | FERNANDO | ❗ | |
+| Splines cúbicos | RICARDO | ⚠️ | TODO ALV |
 
--Extrapolacion Richardson y Romberg         FERNANDO    ❗
--Cuadratura Adaptativa                      RICARDO     ❗
--Cuadratura Gaussiana (simple y compuesto)  ISIS        ❗
+## Derivación
 
--Integracion multiple (Trapcio compuesto...) FERNANDO   ❗
+| Método | Responsable | Estado |
+|---|---|:---:|
+| Fórmula de 2 puntos (hacer serie de Taylor también) | ISIS | ❗ |
+| Fórmula 2 puntos igual espaciada | FERNANDO | ❗ |
+| Fórmula 3 puntos igual espaciada | RICARDO | ❗ |
 
+## Integración
 
+| Método | Responsable | Estado |
+|---|---|:---:|
+| Trapecio (simple y compuesto) | ISIS | ❗ |
+| Simpson 1/3 (simple y compuesto) | FERNANDO | ❗ |
+| Simpson 3/8 (simple y compuesto) | RICARDO | ❗ |
+| Extrapolación de Richardson y Romberg | FERNANDO | ❗ |
+| Cuadratura adaptativa | RICARDO | ❗ |
+| Cuadratura gaussiana (simple y compuesto) | ISIS | ❗ |
+| Integración múltiple (Trapecio compuesto...) | FERNANDO | ❗ |
 
+## Programas para testear
 
-
-Programas pa testear
 - Postman
 
-Clases re-usables de CSS
-.menu-metodos
-.inputs-div
-.send-button
-.error-message
+## Clases reutilizables de CSS
 
-metodos:
-    parametros: 
-        (variable de funcion,intervalo 1, intervalo 2, error maximo, maximo de iteraciones)
-    salida: 
-        {
-            "raiz"
-            "tabla"
-            "aproximaciones"
-        }
+- `.menu-metodos`
+- `.inputs-div`
+- `.send-button`
+- `.error-message`
 
-generales:
-    -hacer generador de tabla
+## Especificación de métodos
+
+**Parámetros:** variable de función, intervalo 1, intervalo 2, error máximo, máximo de iteraciones
+
+**Salida:**
+
+```json
+{
+  "raiz": "",
+  "tabla": "",
+  "aproximaciones": ""
+}
+```
+
+## Generales
+
+- Hacer generador de tabla
