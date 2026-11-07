@@ -9,6 +9,7 @@ from modelos import (
     FakePositionModel,
     SteffencenModel,
     MullerModel,
+    HornerModel,
     DeflacionModel,
     LagrangeModel
 )
@@ -66,6 +67,10 @@ def calcular_Steffensen(data: SteffencenModel):
 @app.post("/muller")
 def calcular_Muller(data: MullerModel):
     return muller_method(data)
+
+@app.post("/horner")
+def calcular_Horner(data: HornerModel):
+    return horner_method(data)
 
 @app.post("/deflacion")
 def calcular_Deflacion(data: DeflacionModel):
