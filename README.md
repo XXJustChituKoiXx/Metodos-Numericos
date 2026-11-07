@@ -9,7 +9,7 @@ Metodos
 ⚠️-en produccion
 ❗-no empezado
 
-Metodos Numericos
+###Metodos Numericos (para raices)
 -Flotante a Bin    RICARDO  ✅
 -Biseccion         ISIS     ✅ 
 -Secante           FERNANDO ✅
@@ -21,13 +21,34 @@ Metodos Numericos
 -Horner            FERNANDO ✅ 
 -Muller            RICARDO  ✅
 
-Interpolaciones
--Lagrange                   FERNANDO    ❗
--Neville                    ISIS        ❗
+###Interpolaciones
+-Lagrange                   FERNANDO    ⚠️
+-Neville                    ISIS        ⚠️  Interfaz, conectar con pagina
 -Diferiencias divididas     RICARDO     ⚠️ Ibterfaz Grafica
--Igualmente espaciados      ISIS        ❗
+-Igualmente espaciados      ISIS        ⚠️
 -Hermite                    FERNANDO    ❗
 -Splines Cubicos            RICARDO     ⚠️ TODO ALV
+
+###Derivacion
+-Formula de 2 puntos (Hacer serie de Taylor tmb)    ISIS        ❗                
+-Formula 2 puntos igual espacia                     FERNANDO    ❗
+-Formula 3 puntos igual espacia                     RICARDO     ❗
+
+###Integracion
+
+-Trapecio (simple y compuesto)              ISIS        ❗                
+-Simpson 1/3 (simple y compuesto)           FERNANDO    ❗
+-Simpson 3/8 (simple y compuesto)           RICARDO     ❗
+
+-Extrapolacion Richardson y Romberg         FERNANDO    ❗
+-Cuadratura Adaptativa                      RICARDO     ❗
+-Cuadratura Gaussiana (simple y compuesto)  ISIS        ❗
+
+-Integracion multiple (Trapcio compuesto...) FERNANDO   ❗
+
+
+
+
 
 Programas pa testear
 - Postman
