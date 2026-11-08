@@ -1,3 +1,5 @@
+import { evaluarPolinomio, renderizarGrafica } from './auxiliares.js';
+
 function createSection(idSeccion, claseCss) {
     let section = document.createElement("section");
     section.className = claseCss;
@@ -75,7 +77,6 @@ function createTh(idCabecera, claseCss, texto) {
     return th;    
 }
 
-// crea botones de menu compuestos
 function createMenuButton(tipoContenedor, idContenedor, claseContenedor, claseBoton, listaBotones = []) {
     const container = tipoContenedor == "nav" ? document.createElement('nav') : createDiv(idContenedor, claseContenedor);
     container.className = claseContenedor;
@@ -88,37 +89,23 @@ function createMenuButton(tipoContenedor, idContenedor, claseContenedor, claseBo
     return container;
 }
 
-// crea una tabla generica permitiendo texto o elementos html dinamicos
 function createGenericTable(idTabla, claseCss, titulosColumnas = [], matrizDatos = [], formatearCelda = (valor) => valor) {
     const table = createTable(idTabla, claseCss);
-
     const filaEncabezado = createTr("tr-encabezado", "tr-encabezado");
 
     titulosColumnas.forEach((textoCabecera, indiceColumna) => {
-        const th = createTh(
-            "th-" + indiceColumna,
-            "th-tabla",
-            textoCabecera
-        );
+        const th = createTh("th-" + indiceColumna, "th-tabla", textoCabecera);
         filaEncabezado.appendChild(th);
     });
 
     table.appendChild(filaEncabezado);
 
     matrizDatos.forEach((filaDatos, indiceFila) => {
-        const tr = createTr(
-            "tr-" + indiceFila,
-            "tr-tabla"
-        );
+        const tr = createTr("tr-" + indiceFila, "tr-tabla");
 
         filaDatos.forEach((valorCelda, indiceColumna) => {
             const resultadoFormateado = formatearCelda(valorCelda, indiceColumna, indiceFila);
-
-            const td = createTd(
-                "td-" + indiceFila + "-" + indiceColumna,
-                "td-tabla",
-                ""
-            );
+            const td = createTd("td-" + indiceFila + "-" + indiceColumna, "td-tabla", "");
 
             if (resultadoFormateado instanceof HTMLElement) {
                 td.appendChild(resultadoFormateado);
@@ -135,10 +122,8 @@ function createGenericTable(idTabla, claseCss, titulosColumnas = [], matrizDatos
     return table;
 }
 
-// crea un contenedor estructurado para mostrar polinomios limpios con exponentes reales
 function createPolynomial(idContenedor, claseCss, coeficientes) {
     let container = createDiv(idContenedor, claseCss || "polynomial-container");
-    
     let terminosValidos = [];
     let gradoMaximo = coeficientes.length - 1;
 
@@ -195,7 +180,6 @@ function createPolynomial(idContenedor, claseCss, coeficientes) {
     return container;
 }
 
-// crea una seccion con un canvas listo para chart.js
 function createChartCanvas(idSeccion, idCanvas, tituloGrafica = "Grafica de Resultados") {
     let section = createSection(idSeccion, "main-section-lagrange");
     let div = createDiv("", "inputs-div");
@@ -216,15 +200,13 @@ function createChartCanvas(idSeccion, idCanvas, tituloGrafica = "Grafica de Resu
 }
 
 function renderizarGraficaMultiplesPolinomios(idCanvas, listaPolinomiosCoeficientes, listaPuntosIntervalos) {
-    const todosLosX = listaPuntosIntervalos.flat().map(p => p[0]);
-    const minX = Math.min(...todosLosX);
-    const maxX = Math.max(...todosLosX);
     const datasets = [];
-    const colores = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#ec4899']; // Paleta para diferenciar curvas
+    const colores = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#ec4899'];
 
-    // 1. Generar graficas para cada polinomio dentro de su intervalo correspondiente
     listaPolinomiosCoeficientes.forEach((coeficientes, index) => {
         const puntosIntervalo = listaPuntosIntervalos[index];
+        if (!puntosIntervalo || puntosIntervalo.length === 0) return;
+
         const xsIntervalo = puntosIntervalo.map(p => p[0]);
         const minIntervalo = Math.min(...xsIntervalo);
         const maxIntervalo = Math.max(...xsIntervalo);
@@ -250,18 +232,17 @@ function renderizarGraficaMultiplesPolinomios(idCanvas, listaPolinomiosCoeficien
         });
     });
 
-    // 2. Agregar los puntos de todos los intervalos agrupados en un solo dataset o múltiples
     const todosLosPuntosOriginales = listaPuntosIntervalos.flat().map(p => ({ x: p[0], y: p[1] }));
     
     datasets.push({
-        label: 'Puntos de los Intervalos',
+        label: 'Puntos Originales',
         data: todosLosPuntosOriginales,
+        type: 'scatter',
         backgroundColor: '#f57eb6',
         pointRadius: 6,
         pointHoverRadius: 8
     });
 
-    // Llamada a tu función genérica existente que se encarga de renderizar en Chart.js
     renderizarGrafica(idCanvas, datasets);
 }
 

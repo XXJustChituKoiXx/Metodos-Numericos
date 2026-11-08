@@ -23,14 +23,12 @@ Metodos Numericos
 -Muller            RICARDO  ✅
 
 Interpolaciones
--Lagrange                   FERNANDO    ❗
--Neville                    ISIS        ⚠️  Interfaz, conectar con pagina
--Lagrange                   FERNANDO    ⚠️ Solo falta grafica con chart js
--Neville                    ISIS        ❗
--Diferiencias divididas     RICARDO     ⚠️ Ibterfaz Grafica
+-Lagrange                   FERNANDO    ✅
+-Neville                    ISIS        ⚠️ Interfaz, conectar con pagina
+-Diferiencias divididas     RICARDO     ✅
 -Igualmente espaciados      ISIS        ⚠️
 -Hermite                    FERNANDO    ❗
--Splines Cubicos            RICARDO     ⚠️ TODO ALV
+-Splines Cubicos            RICARDO     ❗ TODO ALV
 
 Derivacion
 -Formula de 2 puntos 

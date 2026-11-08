@@ -7,16 +7,16 @@ import {
     createSpan,
     createGenericTable,
     createPolynomial,
-    createChartCanvas
+    createChartCanvas,
+    renderizarGraficaMultiplesPolinomios
 } from "../factories.js";
-import { mostrarError, formatearNumero, renderizarGraficaLagrange } from "../auxiliares.js";
+import { mostrarError, formatearNumero} from "../auxiliares.js";
 import { conectApi } from "../conection.js";
  
 export function lagrange_init() {
     const article = document.querySelector("article");
     article.innerHTML = "";
  
-    // arma la seccion de los inputs
     const sectionInput = createSection("main-section-lagrange", "main-section-lagrange");
     const inputDiv = createDiv("input-section-lagrange", "inputs-div");
     const titleH2 = document.createElement("h2");
@@ -36,7 +36,6 @@ export function lagrange_init() {
     btnAgregar.className = "send-button btn-azul";
     btnAgregar.type = "button";
 
-    // actualiza la visibilidad de los botones de eliminar segun la cantidad de filas
     function actualizarBotonesEliminar() {
         const filas = contenedorPuntos.querySelectorAll(".fila-punto");
         filas.forEach((fila, index) => {
@@ -51,7 +50,6 @@ export function lagrange_init() {
         });
     }
 
-    // crea una fila nueva con sus inputs para x e y alineados en la misma linea
     function agregarFilaPuntos(valX = "", valY = "") {
         const filaDiv = createDiv("", "fila-punto");
         filaDiv.className = "fila-punto";
@@ -68,7 +66,6 @@ export function lagrange_init() {
         btnEliminar.className = "btn-eliminar-fila btn-azul-eliminar";
         btnEliminar.type = "button";
         
-        // borra la fila al hacer clic
         btnEliminar.addEventListener("click", () => {
             if (contenedorPuntos.children.length > 2) {
                 filaDiv.remove();
@@ -86,7 +83,6 @@ export function lagrange_init() {
     agregarFilaPuntos();
     agregarFilaPuntos();
 
-    // añade otra fila al hacer clic en el boton
     btnAgregar.addEventListener("click", () => {
         agregarFilaPuntos();
     });
@@ -127,7 +123,6 @@ export function lagrange_init() {
     sectionInput.appendChild(inputDiv);
     article.appendChild(sectionInput);
  
-    // valida y manda los datos al apretar calcular
     buttonSend.addEventListener("click", async () => {
         errorMensaje.style.display = "none";
         const xEvaluar = inputEvaluar.value;
@@ -187,14 +182,12 @@ export function lagrange_init() {
 export function lagrange_result(data) {
     const article = document.querySelector("article");
  
-    // borra los resultados viejos si ya existian
     const anteriorRes = document.getElementById("result-section-lagrange");
     if (anteriorRes) anteriorRes.remove();
 
     const anteriorGraf = document.getElementById("grafica-section-lagrange");
     if (anteriorGraf) anteriorGraf.remove();
  
-    // arma la seccion de resultados
     const sectionResult = createSection("result-section-lagrange", "main-section-lagrange");
     sectionResult.className = "main-section-lagrange section-resultados";
     
@@ -216,7 +209,6 @@ export function lagrange_result(data) {
         return;
     }
  
-    // muestra la tarjeta con el polinomio final
     const cardPolinomio = createDiv("", "resultado-card");
     const labelPoly = createLabel("", "", "", "Polinomio Interpolante P(x):");
     cardPolinomio.appendChild(labelPoly);
@@ -224,7 +216,6 @@ export function lagrange_result(data) {
     cardPolinomio.appendChild(polyElement);
     resultDiv.appendChild(cardPolinomio);
  
-    // muestra la tarjeta con el grado y la evaluacion
     const cardInfo = createDiv("", "resultado-card");
     const gradoSpan = createSpan(
         "grado-lagrange",
@@ -243,7 +234,6 @@ export function lagrange_result(data) {
     }
     resultDiv.appendChild(cardInfo);
  
-    // arma la tabla con los polinomios base
     const encabezados = ["i", "x(i)", "y(i)", "L(i)(x)"];
     
     const tablaFormateada = data.tabla.map(fila => {
@@ -274,7 +264,6 @@ export function lagrange_result(data) {
     sectionResult.appendChild(resultDiv);
     article.appendChild(sectionResult);
 
-    // crea la seccion de la grafica usando el factory
     const sectionGrafica = createChartCanvas(
         "grafica-section-lagrange", 
         "lagrangeChart", 
@@ -282,6 +271,9 @@ export function lagrange_result(data) {
     );
     article.appendChild(sectionGrafica);
 
-    // dibuja la grafica usando la funcion importada desde auxiliares
-    renderizarGraficaLagrange("lagrangeChart", data.tabla.map(f => [f[1], f[2]]), data.coeficientes);
+    const listaPolinomios = [data.coeficientes];
+    const puntosOriginales = data.tabla.map(f => [f[1], f[2]]);
+    const listaIntervalos = [puntosOriginales];
+
+    renderizarGraficaMultiplesPolinomios("lagrangeChart", listaPolinomios, listaIntervalos);
 }

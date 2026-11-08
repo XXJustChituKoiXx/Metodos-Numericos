@@ -1,3 +1,6 @@
+import { Chart, registerables } from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/+esm'; 
+Chart.register(...registerables);
+
 export function mostrarError(elemento, texto) {
     elemento.textContent = texto;
     elemento.style.display = "block";
@@ -78,12 +81,17 @@ export function formatearPolinomio(coeficientes) {
 }
 
 export function renderizarGrafica(canvasId, datasetsPersonalizados, opcionesExtras = {}) {
+    if (window[canvasId + "Instance"] instanceof Chart) {
+        try {
+            window[canvasId + "Instance"].destroy();
+        } catch (error) {
+            console.warn("No se pudo destruir la instancia previa de Chart.js:", error);
+        }
+        window[canvasId + "Instance"] = null;
+    }
+
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
-
-    if (window[canvasId + "Instance"] instanceof Chart) {
-        window[canvasId + "Instance"].destroy();
-    }
 
     const ctx = canvas.getContext('2d');
     
@@ -109,12 +117,25 @@ export function renderizarGrafica(canvasId, datasetsPersonalizados, opcionesExtr
         }
     });
 }
+
 export function evaluarPolinomio(coefs, x) {
     let y = 0;
+    if (!Array.isArray(coefs)) return y;
     let n = coefs.length - 1;
+
     for (let i = 0; i < coefs.length; i++) {
         let grado = n - i;
-        y += coefs[i] * Math.pow(x, grado);
+        let c = coefs[i];
+
+        // Extraer el valor numérico si el coeficiente viene como objeto complejo ({real, imag})
+        let valorCoef = c;
+        if (c !== null && typeof c === "object") {
+            valorCoef = c.real !== undefined ? c.real : 0;
+        }
+
+        if (typeof valorCoef === "number" && !isNaN(valorCoef)) {
+            y += valorCoef * Math.pow(x, grado);
+        }
     }
     return y;
 }
