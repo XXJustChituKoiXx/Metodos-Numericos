@@ -36,9 +36,9 @@ pip install sympy
 
 | Método | Responsable | Estado | Notas |
 |---|---|:---:|---|
-| Lagrange | FERNANDO | ⚠️ | |
+| Lagrange | FERNANDO | ✅ | |
 | Neville | ISIS | ⚠️ | Interfaz, conectar con página |
-| Diferencias divididas | RICARDO | ⚠️ | Interfaz gráfica |
+| Diferencias divididas | RICARDO | ✅ | |
 | Igualmente espaciados | ISIS | ⚠️ | |
 | Hermite | FERNANDO | ❗ | |
 | Splines cúbicos | RICARDO | ⚠️ | TODO ALV |
