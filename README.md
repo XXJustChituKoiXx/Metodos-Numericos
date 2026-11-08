@@ -23,12 +23,31 @@ Metodos Numericos
 -Muller            RICARDO  ✅
 
 Interpolaciones
+-Lagrange                   FERNANDO    ❗
+-Neville                    ISIS        ⚠️  Interfaz, conectar con pagina
 -Lagrange                   FERNANDO    ⚠️ Solo falta grafica con chart js
 -Neville                    ISIS        ❗
 -Diferiencias divididas     RICARDO     ⚠️ Ibterfaz Grafica
--Igualmente espaciados      ISIS        ❗
+-Igualmente espaciados      ISIS        ⚠️
 -Hermite                    FERNANDO    ❗
 -Splines Cubicos            RICARDO     ⚠️ TODO ALV
+
+Derivacion
+-Formula de 2 puntos 
+    (Hacer serie de Taylor tmb) ISIS        ❗
+-Formula 2 puntos igual espacia FERNANDO    ❗
+-Formula 3 puntos igual espacia RICARDO     ❗
+
+Integracion
+-Trapecio                                   ISIS        ❗
+-Simpson 1/3                                FERNANDO    ❗
+-Simpson 3/8                                RICARDO     ❗
+-Trapecio compueto                          ISIS        ❗
+-Extrapolacion Richardson                   FERNANDO    ❗
+-Cuadratura Adaptativa                      RICARDO     ❗
+-Cuadratura Gaussiana                       ISIS        ❗
+
+-Integracion multiple (Trapcio compuesto...) FERNANDO   ❗
 
 Programas pa testear
 - Postman

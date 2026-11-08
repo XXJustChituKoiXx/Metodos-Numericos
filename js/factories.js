@@ -1,121 +1,121 @@
-function createSection(id, clas) {
-    let section = document.createElement("section")
-    section.className = clas;
-    section.id = id
-    return section
+function createSection(idSeccion, claseCss) {
+    let section = document.createElement("section");
+    section.className = claseCss;
+    section.id = idSeccion;
+    return section;
 }
 
-function createLabel(id, clas, forr, text) {
+function createLabel(idLabel, claseCss, idAsociado, texto) {
     let label = document.createElement("label");
-    label.id = id;
-    label.className = clas;
-    label.htmlFor = forr;
-    label.textContent = text;
+    label.id = idLabel;
+    label.className = claseCss;
+    label.htmlFor = idAsociado;
+    label.textContent = texto;
     return label;
 }
 
-function createInput(id, clas, type, placeholder) {
+function createInput(idInput, claseCss, tipo, textoPlaceholder) {
     let input = document.createElement("input");
-    input.id = id;
-    input.className = clas;
-    input.type = type;
-    input.placeholder = placeholder;
+    input.id = idInput;
+    input.className = claseCss;
+    input.type = tipo;
+    input.placeholder = textoPlaceholder;
     return input;
 }
 
-function createButton(clas, text) {
+function createButton(claseCss, textoBoton) {
     let button = document.createElement("button");
-    button.className = clas;
-    button.textContent = text;
+    button.className = claseCss;
+    button.textContent = textoBoton;
     return button;
 }
 
-function createDiv(id, clas) {
+function createDiv(idDiv, claseCss) {
     let div = document.createElement("div");
-    div.id = id;
-    div.className = clas;
+    div.id = idDiv;
+    div.className = claseCss;
     return div;
 }
 
-function createSpan(id, clas, text) {
+function createSpan(idSpan, claseCss, texto) {
     let span = document.createElement("span");
-    span.id = id;
-    span.className = clas;
-    span.textContent = text;
+    span.id = idSpan;
+    span.className = claseCss;
+    span.textContent = texto;
     return span;
 }
 
-function createTable(id, clas, minRows, minCols) {
+function createTable(idTabla, claseCss) {
     let table = document.createElement("table");
-    table.id = id;
-    table.className = clas;
+    table.id = idTabla;
+    table.className = claseCss;
     return table;
 }
 
-function createTr(id, clas) {
+function createTr(idFila, claseCss) {
     let tr = document.createElement("tr");
-    tr.id = id;
-    tr.className = clas;
+    tr.id = idFila;
+    tr.className = claseCss;
     return tr;
 }
 
-function createTd(id, clas, text) {
+function createTd(idCelda, claseCss, texto) {
     let td = document.createElement("td");
-    td.id = id;
-    td.className = clas;
-    td.textContent = text;
+    td.id = idCelda;
+    td.className = claseCss;
+    td.textContent = texto;
     return td;
 }
 
-function createTh(id, clas, text) {
+function createTh(idCabecera, claseCss, texto) {
     let th = document.createElement("th");
-    th.id = id;
-    th.className = clas;
-    th.textContent = text;
+    th.id = idCabecera;
+    th.className = claseCss;
+    th.textContent = texto;
     return th;    
 }
 
 // crea botones de menu compuestos
-function createMenuButton(wraper , id, clas, classButton ,buttons=[]){
-    const container = wraper == "nav" ? document.createElement('nav'):createDiv(id,clas);
-    container.className = clas;
-    container.id = id;
-    buttons.forEach((e) =>{
-        const element = createButton(classButton,e.text);
-        element.className = classButton;
+function createMenuButton(tipoContenedor, idContenedor, claseContenedor, claseBoton, listaBotones = []) {
+    const container = tipoContenedor == "nav" ? document.createElement('nav') : createDiv(idContenedor, claseContenedor);
+    container.className = claseContenedor;
+    container.id = idContenedor;
+    listaBotones.forEach((botonData) => {
+        const element = createButton(claseBoton, botonData.text);
+        element.className = claseBoton;
         container.appendChild(element);
     });
     return container;
 }
 
 // crea una tabla generica permitiendo texto o elementos html dinamicos
-function createGenericTable(id, clas, encabezados = [], datos = [], formatear = (valor) => valor) {
-    const table = createTable(id, clas);
+function createGenericTable(idTabla, claseCss, titulosColumnas = [], matrizDatos = [], formatearCelda = (valor) => valor) {
+    const table = createTable(idTabla, claseCss);
 
     const filaEncabezado = createTr("tr-encabezado", "tr-encabezado");
 
-    encabezados.forEach((texto, indice) => {
+    titulosColumnas.forEach((textoCabecera, indiceColumna) => {
         const th = createTh(
-            "th-" + indice,
+            "th-" + indiceColumna,
             "th-tabla",
-            texto
+            textoCabecera
         );
         filaEncabezado.appendChild(th);
     });
 
     table.appendChild(filaEncabezado);
 
-    datos.forEach((fila, indiceFila) => {
+    matrizDatos.forEach((filaDatos, indiceFila) => {
         const tr = createTr(
             "tr-" + indiceFila,
             "tr-tabla"
         );
 
-        fila.forEach((valor, indiceCol) => {
-            const resultadoFormateado = formatear(valor, indiceCol, indiceFila);
+        filaDatos.forEach((valorCelda, indiceColumna) => {
+            const resultadoFormateado = formatearCelda(valorCelda, indiceColumna, indiceFila);
 
             const td = createTd(
-                "td-" + indiceFila + "-" + indiceCol,
+                "td-" + indiceFila + "-" + indiceColumna,
                 "td-tabla",
                 ""
             );
@@ -136,17 +136,17 @@ function createGenericTable(id, clas, encabezados = [], datos = [], formatear = 
 }
 
 // crea un contenedor estructurado para mostrar polinomios limpios con exponentes reales
-function createPolynomial(id, clas, coeficientes) {
-    let container = createDiv(id, clas || "polynomial-container");
+function createPolynomial(idContenedor, claseCss, coeficientes) {
+    let container = createDiv(idContenedor, claseCss || "polynomial-container");
     
     let terminosValidos = [];
-    let n = coeficientes.length - 1;
+    let gradoMaximo = coeficientes.length - 1;
 
     for (let i = 0; i < coeficientes.length; i++) {
-        let c = coeficientes[i];
-        if (Math.abs(c) < 1e-12) continue;
-        let grado = n - i;
-        terminosValidos.push({ c, grado });
+        let coeficienteActual = coeficientes[i];
+        if (Math.abs(coeficienteActual) < 1e-12) continue;
+        let grado = gradoMaximo - i;
+        terminosValidos.push({ c: coeficienteActual, grado });
     }
 
     if (terminosValidos.length === 0) {
@@ -155,8 +155,8 @@ function createPolynomial(id, clas, coeficientes) {
         return container;
     }
 
-    terminosValidos.forEach((term, index) => {
-        let { c, grado } = term;
+    terminosValidos.forEach((termino, index) => {
+        let { c, grado } = termino;
         let esPrimero = (index === 0);
         let signoStr = "";
         let absC = Math.abs(c);
@@ -196,23 +196,73 @@ function createPolynomial(id, clas, coeficientes) {
 }
 
 // crea una seccion con un canvas listo para chart.js
-function createChartCanvas(sectionId, canvasId, titulo = "Grafica de Resultados") {
-    let section = createSection(sectionId, "main-section-lagrange");
+function createChartCanvas(idSeccion, idCanvas, tituloGrafica = "Grafica de Resultados") {
+    let section = createSection(idSeccion, "main-section-lagrange");
     let div = createDiv("", "inputs-div");
     
     let h2 = document.createElement("h2");
-    h2.textContent = titulo;
+    h2.textContent = tituloGrafica;
     div.appendChild(h2);
 
     let graficaContainer = createDiv("", "grafica-container");
     let canvas = document.createElement("canvas");
-    canvas.id = canvasId;
+    canvas.id = idCanvas;
     graficaContainer.appendChild(canvas);
     
     div.appendChild(graficaContainer);
     section.appendChild(div);
     
     return section;
+}
+
+function renderizarGraficaMultiplesPolinomios(idCanvas, listaPolinomiosCoeficientes, listaPuntosIntervalos) {
+    const todosLosX = listaPuntosIntervalos.flat().map(p => p[0]);
+    const minX = Math.min(...todosLosX);
+    const maxX = Math.max(...todosLosX);
+    const datasets = [];
+    const colores = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#ec4899']; // Paleta para diferenciar curvas
+
+    // 1. Generar graficas para cada polinomio dentro de su intervalo correspondiente
+    listaPolinomiosCoeficientes.forEach((coeficientes, index) => {
+        const puntosIntervalo = listaPuntosIntervalos[index];
+        const xsIntervalo = puntosIntervalo.map(p => p[0]);
+        const minIntervalo = Math.min(...xsIntervalo);
+        const maxIntervalo = Math.max(...xsIntervalo);
+
+        const puntosCurva = [];
+        const pasos = 100;
+        const paso = (maxIntervalo - minIntervalo) / pasos;
+
+        for (let i = 0; i <= pasos; i++) {
+            let x = minIntervalo + i * paso;
+            let y = evaluarPolinomio(coeficientes, x);
+            puntosCurva.push({ x: x, y: y });
+        }
+
+        datasets.push({
+            label: `Polinomio ${index + 1}`,
+            data: puntosCurva,
+            type: 'line',
+            borderColor: colores[index % colores.length],
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0
+        });
+    });
+
+    // 2. Agregar los puntos de todos los intervalos agrupados en un solo dataset o múltiples
+    const todosLosPuntosOriginales = listaPuntosIntervalos.flat().map(p => ({ x: p[0], y: p[1] }));
+    
+    datasets.push({
+        label: 'Puntos de los Intervalos',
+        data: todosLosPuntosOriginales,
+        backgroundColor: '#f57eb6',
+        pointRadius: 6,
+        pointHoverRadius: 8
+    });
+
+    // Llamada a tu función genérica existente que se encarga de renderizar en Chart.js
+    renderizarGrafica(idCanvas, datasets);
 }
 
 export {
@@ -229,5 +279,6 @@ export {
     createGenericTable,
     createSpan,
     createPolynomial,
-    createChartCanvas
+    createChartCanvas,
+    renderizarGraficaMultiplesPolinomios 
 };
