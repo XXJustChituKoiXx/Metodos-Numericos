@@ -50,6 +50,12 @@ class MullerModel(BaseModel):
     error_max: float = 1e-8
     max_iter: int = 100
 
+class HornerModel(BaseModel):
+    coeficientes: Union[str, List[float]]
+    a: float
+    error_max: float = 1e-8
+    max_iter: int = 100
+
 class DeflacionModel(BaseModel):
     function: str
     x0: float
