@@ -1,6 +1,24 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from modelos import (
+    FloatNumberModel,
+    BisexionModel,
+    SecanteModel,
+    NewthonRaphsonModel,
+    PuntoFijoModel,
+    FakePositionModel,
+    SteffencenModel,
+    MullerModel,
+    HornerModel,
+    DeflacionModel,
+    LagrangeModel,
+    NevilleModel,
+    IgualmenteEspaciadosModel,
+    Derivacion2PuntosModel,
+    TrapecioModel,
+    GaussianaModel,
+)
+
 from parcial1.float_to_bin import float_to_bin
 from parcial1.secante import sec_method
 from parcial1.punto_fijo import pf_method
@@ -11,10 +29,15 @@ from parcial1.horner import horner_method
 from parcial1.deflacion import ctr_deflacion
 from parcial1.bisexion import biseccion
 from parcial1.steffensen import ctr_Steff
+from parcial2.lagrange import lagrange_method
+from parcial1.neville import ctr_neville
+from parcial1.Igualmente_esp import ctr_igualmente_espaciados
+from parcial2.Derivacion.derivacion_2puntos import ctr_derivacion_2puntos
+from parcial2.Integracion.trapecio import ctr_trapecio
+from parcial2.Integracion.gaussiana import ctr_gaussiana
 
-#crea la fakin app del server
 app = FastAPI()
-#configuracion del corse para que no pete con el frontend
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -22,101 +45,67 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-#float number
-class FloatNumberModel(BaseModel):
-    number: str
-    bits: int
-    
+
 @app.post("/float_number")
 def float_number_representation(data: FloatNumberModel):
     return float_to_bin(data)
-
-#biseccion metodo
-class BisexionModel(BaseModel):
-    function: str
-    a: float
-    b: float
-    error_max: float = 1e-8
-    max_iter: int = 100
 
 @app.post("/biseccion")
 def calcular_Bisexion(data: BisexionModel):
     return biseccion(data)
 
-#secante method
-class SecanteModel(BaseModel):
-    funcion: str
-    a: float
-    b: float
-    error_max: float = 1e-8
-    max_iter: int = 100
- 
- 
 @app.post("/secante")
 def calcular_secante(data: SecanteModel):
     return sec_method(data)
 
-#Newton-Raphson method
-class NewthonRaphsonModel(BaseModel):
-    function: str
-    x0: float
-    #x1: float este metodo solo ocupa una aproximacion
-    error_max: float = 1e-8
-    max_iter: int = 100
- 
- 
 @app.post("/newton_raphson")
 def calcular_newton_raphson(data: NewthonRaphsonModel):
     return newton_raphson(data)
-
-#punto fijo method
-class PuntoFijoModel(BaseModel):
-    funcion: str
-    a: float
-    error_max: float = 1e-8
-    max_iter: int = 100
-
 
 @app.post("/punto_fijo")
 def calcular_punto_fijo(data: PuntoFijoModel):
     return pf_method(data)
 
-#Falsa-Posicion method
-class FakePositionModel(BaseModel):
-    function: str
-    x0: float
-    x1: float
-    error_max: float = 1e-8
-    max_iter: int = 100
- 
 @app.post("/fake_position")
 def calcular_fake_position(data: FakePositionModel):
     return fake_position_metod(data)
-
-#steffensen metodo
-class SteffencenModel(BaseModel):
-    function: str
-    error_max: float = 1e-8
-    max_iter: int = 100
 
 @app.post("/steffensen")
 def calcular_Steffensen(data: SteffencenModel):
     return ctr_Steff(data)
 
-#Muller method
-class MullerModel(BaseModel):
-    function: str
-    x0: float
-    x1: float
-    x2: float #este metodo necesita 3 aproximaciones
-    error_max: float = 1e-8
-    max_iter: int = 100
-
 @app.post("/muller")
 def calcular_Muller(data: MullerModel):
     return muller_method(data)
 
+@app.post("/horner")
+def calcular_Horner(data: HornerModel):
+    return horner_method(data)
 
 @app.post("/deflacion")
 def calcular_Deflacion(data: DeflacionModel):
     return ctr_deflacion(data)
+
+@app.post("/lagrange")
+def calcular_lagrange(data: LagrangeModel):
+    return lagrange_method(data)
+
+@app.post("/neville")
+def calcular_neville(data: NevilleModel):
+    return ctr_neville(data)
+
+@app.post("/igualmente_espaciados")
+def calcular_igualmente_espaciados(data: IgualmenteEspaciadosModel):
+    return ctr_igualmente_espaciados(data)
+
+@app.post("/derivacion_2puntos")
+def calcular_derivacion_2puntos(data: Derivacion2PuntosModel):
+    return ctr_derivacion_2puntos(data)
+
+@app.post("/trapecio")
+def calcular_trapecio(data: TrapecioModel):
+    return ctr_trapecio(data)
+
+@app.post("/gaussiana")
+def calcular_gaussiana(data: GaussianaModel):
+    return ctr_gaussiana(data)

@@ -9,6 +9,12 @@ import { horner_init } from "./metodos/horner-init.js";
 import {deflacion_init} from "./metodos/deflacion.js";
 import {biseccion_init} from "./metodos/biseccion.js";
 import {steffensen_init} from "./metodos/steffensen.js";
+import {lagrange_init} from "./interpolacion/lagrange-init.js";
+import { neville_init } from "./interpolacion/neville.js";
+import { igualmente_espaciados_init } from "./interpolacion/igualmente_espaciados.js";
+import { derivacion_2puntos_init } from "./derivacion/derivacion_2puntos.js";
+import { trapecio_init } from "./integracion/trapecio.js";
+import { gaussiana_init } from "./integracion/gaussiana.js";
 
 const aside = document.querySelector("aside");
 const article = document.querySelector("article");
@@ -100,11 +106,66 @@ parc1Button.addEventListener("click", () => {
 });
 
 parc2Button.addEventListener("click", () => {
+    //vacear el aside y el article para cambiar de parcial o metodo
     aside.innerHTML = "";
     article.innerHTML = "";
+
+    //arreglo de metodos a agregar
+    const menuMethods = [
+        {"text" : "Lagrange"},
+        {"text" : "Neville"},
+        {"text" : "Puntos igualmente espaciados"}
+    ];
+
+    //crea los elementos de este parcial
+    const menuButtons = createMenuButton("div","menu-metodos","menu-metodos","methods-parc1-btn",menuMethods);
+    const buttons = menuButtons.querySelectorAll(".methods-parc1-btn");
+
+    buttons[0].addEventListener("click", () => {
+        article.innerHTML = "";
+        lagrange_init();
+    });
+
+    buttons[1].addEventListener("click", () => {
+        article.innerHTML = "";
+        neville_init();
+    });
+
+    buttons[2].addEventListener("click", () => {
+        article.innerHTML = "";
+        igualmente_espaciados_init();
+    });
+
+    aside.appendChild(menuButtons);
 });
 
 parc3Button.addEventListener("click", () => {
     aside.innerHTML = "";
     article.innerHTML = "";
+
+    const menuMethods = [
+        {"text" : "Derivacion 2 puntos"},
+        {"text" : "Regla del Trapecio"},
+        {"text" : "Cuadratura Gaussiana"}
+    ];
+
+    const menuButtons = createMenuButton("div","menu-metodos","menu-metodos","methods-parc1-btn",menuMethods);
+    const buttons = menuButtons.querySelectorAll(".methods-parc1-btn");
+
+    buttons[0].addEventListener("click", () => {
+        article.innerHTML = "";
+        derivacion_2puntos_init();
+    });
+
+    buttons[1].addEventListener("click", () => {
+        article.innerHTML = "";
+        trapecio_init();
+    });
+
+    buttons[2].addEventListener("click", () => {
+        article.innerHTML = "";
+        gaussiana_init();
+    });
+
+    aside.appendChild(menuButtons);
 });

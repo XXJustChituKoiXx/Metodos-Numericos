@@ -1,48 +1,58 @@
-def neville(x_vals, y_vals, x):
-    
-    n = len(x_vals)
-    # Tabla de Neville Q[i][j]
-    Q = [[0.0] * n for _ in range(n)]
+import sys, os
+ruta_api = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(ruta_api)
 
-    # Inicializar primera columna con y_vals
+
+def _parse_puntos(puntos):
+    if isinstance(puntos, list):
+        return [[float(p[0]), float(p[1])] for p in puntos]
+    txt = puntos.replace("\n", ";")
+    pares = []
+    for chunk in txt.split(";"):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        vals = chunk.split(",")
+        if len(vals) != 2:
+            raise ValueError(f"Punto invalido: '{chunk}' (debe ser 'x,y')")
+        pares.append([float(vals[0].strip()), float(vals[1].strip())])
+    return pares
+
+
+def _neville(puntos, x_eval):
+    pares = _parse_puntos(puntos)
+    n = len(pares)
+    if n < 1:
+        return {"resultado": None, "tabla": [], "mensaje": "Sin puntos"}
+    xs = [p[0] for p in pares]
+    ys = [p[1] for p in pares]
+
+    N = [[0.0] * n for _ in range(n)]
     for i in range(n):
-        Q[i][0] = y_vals[i]
+        N[i][0] = ys[i]
 
-    # Construir la tabla
     for j in range(1, n):
         for i in range(n - j):
-            Q[i][j] = ((x - x_vals[i + j]) * Q[i][j - 1]
-                       - (x - x_vals[i]) * Q[i + 1][j - 1]) \
-                      / (x_vals[i] - x_vals[i + j])
+            denom = xs[i] - xs[i + j]
+            if abs(denom) < 1e-15:
+                return {"resultado": None, "tabla": [], "mensaje": "Nodos repetidos"}
+            N[i][j] = ((x_eval - xs[i + j]) * N[i][j - 1]
+                       - (x_eval - xs[i]) * N[i + 1][j - 1]) / denom
 
-    return Q[0][n - 1], Q
-
-
-def imprimir_tabla(Q, x_vals):
-    n = len(Q)
-    print("\nTabla de Neville:")
-    print("i\\j", end="\t")
-    for j in range(n):
-        print(f"Q[i][{j}]", end="\t")
-    print()
+    tabla = []
     for i in range(n):
-        print(f"{i}", end="\t")
-        for j in range(n - i):
-            print(f"{Q[i][j]:.6f}", end="\t")
-        print()
+        fila = [i]
+        for j in range(n):
+            fila.append(N[i][j] if j <= n - 1 - i else None)
+        tabla.append(fila)
+
+    return {"resultado": N[0][n - 1], "tabla": tabla, "n": n,
+            "x_evaluar": x_eval,
+            "mensaje": f"Polinomio interpolante evaluado en x = {x_eval}"}
 
 
-# Usar
-if __name__ == "__main__":
-    # Datos de ejemplo: f(x) = cos(x)
-    import math
-    x_vals = [0.0, 0.6, 0.9, 1.1]
-    y_vals = [math.cos(x) for x in x_vals]
-    x_eval = 0.8
-
-    valor, tabla = neville(x_vals, y_vals, x_eval)
-
-    imprimir_tabla(tabla, x_vals)
-    print(f"\nP({x_eval}) ≈ {valor:.8f}")
-    print(f"cos({x_eval}) = {math.cos(x_eval):.8f}")
-    print(f"Error        = {abs(valor - math.cos(x_eval)):.2e}")
+def ctr_neville(data):
+    try:
+        return _neville(data.puntos, data.x_evaluar)
+    except Exception as e:
+        return {"resultado": None, "tabla": [], "mensaje": f"Error: {e}"}

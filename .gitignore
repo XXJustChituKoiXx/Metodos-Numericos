@@ -2,3 +2,8 @@
 ./api/parcial1/__pycache__
 postman/
 .postman/
+
+__pycache__/
+*.pyc
+.venv/
+postman/
