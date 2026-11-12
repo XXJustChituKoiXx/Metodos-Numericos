@@ -40,8 +40,8 @@ pip install sympy
 | Neville | ISIS | ⚠️ | Interfaz, conectar con página |
 | Diferencias divididas | RICARDO | ✅ | |
 | Igualmente espaciados | ISIS | ⚠️ | |
-| Hermite | FERNANDO | ❗ | |
-| Splines cúbicos | RICARDO | ⚠️ | TODO ALV |
+| Hermite | FERNANDO | ⚠️ | |
+| Splines cúbicos | RICARDO | ⚠️ |  |
 
 ## Derivación
 
