@@ -63,6 +63,13 @@ pip install sympy
 | Cuadratura gaussiana (simple y compuesto) | ISIS | ❗ |
 | Integración múltiple (Trapecio compuesto...) | FERNANDO | ❗ |
 
+## Ecuaciones Diferenciasles
+| Método | Responsable | Estado |
+|---|---|:---:|
+| Euler |  | ❗ |
+| Taylor de Orden n|  | ❗ |
+| Runge Kutta |  | ❗ |
+
 ## Programas para testear
 
 - Postman
